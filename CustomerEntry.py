@@ -1,6 +1,6 @@
 customers = []
 while True:
-    createEntry = input("Enter Customer (Y/No) : ")
+    createEntry = input("Enter Customer (Yes/No) : ")
     createEntry = createEntry[0].lower()
     if createEntry == "n":
         break
