@@ -1,4 +1,4 @@
-customers = []
+customers = [sss]
 while True:
     createEntry = input("Enter Customer (Yes/No) : ")
     createEntry = createEntry[0].lower()
