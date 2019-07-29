@@ -49,3 +49,8 @@ freeSize += deletedSize
 freeSize -= newSize
 totalSize = usedSize + freeSize
 print("Size of Space Left Is {0} GB And Left Is {1} GB And Total Size Is {2} GB".format(freeSize, usedSize, totalSize))"""
+"""Problem7
+people = 1200000
+days = 365
+peopleYear = people * days
+print(f"A Bus Can Carry {peopleYear:,} Peole Each Year")"""
