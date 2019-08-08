@@ -29,7 +29,7 @@ cont = 0
 while(hotDog >= hotDogCont):
     hotDog -= hotDogCont
     cont += 1
-print("Total Container :- {}".format(cont))"""
+print("Total Container :- {}.".format(cont))"""
 """Problem5
 seconds = [66,57,54,53,64,52,59]
 l = len(seconds)
@@ -37,7 +37,7 @@ for i in range(l):
     for j in range(0,l-i-1):
         if seconds[j] > seconds[j+1]:
             seconds[j],seconds[j+1] = seconds[j+1],seconds[j]
-print("The Best Time Is {}".format(seconds[0]))"""
+print("The Best Time Is {}.".format(seconds[0]))"""
 """Problem6
 freeSize = int(input("Size Free : "))
 usedSize = int(input("Size Used : "))
@@ -48,9 +48,97 @@ usedSize += newSize
 freeSize += deletedSize
 freeSize -= newSize
 totalSize = usedSize + freeSize
-print("Size of Space Left Is {0} GB And Left Is {1} GB And Total Size Is {2} GB".format(freeSize, usedSize, totalSize))"""
+print("Size of Space Left Is {0} GB And Left Is {1} GB And Total Size Is {2} GB.".format(freeSize, usedSize, totalSize))"""
 """Problem7
 people = 1200000
 days = 365
 peopleYear = people * days
-print(f"A Bus Can Carry {peopleYear:,} Peole Each Year")"""
+print(f"A Bus Can Carry {peopleYear:,} Peole Each Year.")"""
+"""Problem8
+hours = [8,10,9,8,7,12]
+nurses = len(hours)
+avg = sum(hours) / nurses
+print("The Average No. Of Hours = {}.".format(avg))"""
+"""Problem9
+game = 75
+sweater = 68
+braclets = 43
+calc = ((game + (3*sweater) + (2*braclets)) - braclets) - 10
+print("The Final Price is {}.".format(calc))"""
+"""Problem10
+miles = 2052
+days = 6
+stops = 2
+km = 1.60934
+avg = ((miles / days) / stops) * km
+print("She Drove Average Of {:.2f} Km Between Each Stop.".format(avg))"""
+"""Problem11
+firstMovie = 100
+secondMovie = 110
+hours = (firstMovie + secondMovie) / 60
+print("The Movies Took {} Hours To Watch.".format(hours))"""
+"""Problem12
+red = 5000000
+white = 8000
+ratio = int(red / white)
+print("The Ratio Of Red And White Blood Corpuscles in one Cubic Millimeter is {}.".format(ratio))"""
+"""Problem13
+karaGlass = int(input("Enter No. Of Glasses Sold By Kara : "))
+raniGlass = int(input("Enter No. Of Glasses Sold By Rani : "))
+karaPrice = 5
+raniPrice = 7
+karaMoney = karaGlass * karaPrice
+raniMoney = raniGlass * raniPrice
+if karaMoney > raniMoney:
+    print("Kara Made More Money By {} Cents.".format(karaMoney - raniMoney))
+else:
+    print("Rani Made More Money By {} Cents.".format(raniMoney - karaMoney))"""
+"""Problem14
+def Combination(Array):
+    if len(Array) == 0:
+        return []
+    if len(Array) == 1:
+        return [Array]
+    l = []
+    for i in range(len(Array)):
+        m = Array[i]
+        remList = Array[:i] + Array[i+1:]
+        for j in Combination(remList):
+            l.append([m] + j)
+    return l
+
+student = ["Ram", "Anuj", "Deepak", "Ravi"]
+for c in Combination(student):
+    print(c)"""
+"""Problem15
+DVD = 42
+percent = 12
+saving = ((DVD * 100) / percent) - DVD
+print("She Deposited {} $ In Her Savings Account".format(saving))"""
+"""Problem16
+def getSum(n):
+    total = 0
+    while(n > 0):
+        digit = n % 10
+        total = total + digit
+        n = n / 10
+    return total
+
+no = (int(input("Enter Number : ")))
+sumOf = getSum(no)
+print("The Total Sum Of {} is {}".format(no,sumOf))"""
+"""Problem17
+def duplicate(name):
+    x = name.split()
+    sSize = len(x)
+    r = []
+    for i in range(sSize):
+        k = i + 1
+        for j in range(k,sSize):
+            if x[i] == x[j] and x[i] not in r:
+                r.append(x[i])
+                print(x[i])
+
+students = "Aman Ankit Deepak Aman Deepak Amit Ankit Vansh Aman Sagar"
+duplicate(students)"""
+"""Problem18"""
