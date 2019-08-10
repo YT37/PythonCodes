@@ -61,14 +61,14 @@ def result():
         try:
             num1 = int(input("Enter Number 1 : "))
             num2 = int(input("Enter Number 2 : "))
-            operation = int(input('What Do You Want To Do ? 1. Add, 2. Subtract, 3. Multiply Or 4. Divide.'
+            ooperation = int(input('What Do You Want To Do ? 1. Add, 2. Subtract, 3. Multiply Or 4. Divide.'
                                   'Enter Number: '))
             valiant = True
         except ValueError:
             print("Invalid Input. Please Try Again... ")
         except:
             print("Unknown Error")
-        runOperation(operation, num1, num2)
+        runOperation(ooperation, num1, num2)
 
 
 result()
