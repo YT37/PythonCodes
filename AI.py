@@ -1,21 +1,12 @@
-import pyttsx3
-import speech_recognition as sr
-import pyaudio
-import wikipedia
-import webbrowser
-import os
-import random
-
+import pyttsx3, speech_recognition as sr, pyaudio, wikipedia, webbrowser,random
 engine = pyttsx3.init("sapi5")
 voices = engine.getProperty("voices")
 engine.setProperty("voice", voices[0].id)
-
-
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
-
-
+def sub(a, b):
+    return "".join(a.rsplit(b))
 def myCommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -30,48 +21,26 @@ def myCommand():
         query = r.recognize_google(audio, language="en-in")
         print(f"User said:{query}\n")
     except Exception:
-        speak("Sorry Sir, please repeat!")
+        speak("Sorry , Please Type Your Query")
         query = str(input("Command: "))
-        return "None"
+        return query
     return query
-
-
 def search():
     var1 = query
     var2 = "search"
-    speak("Now speak what do you want to search")
-
-    def sub(a, b):
-        return "".join(a.rsplit(b))
-
-    v = sub(var1, var2)
-    webbrowser.open(f"https://www.google.com/search?q={v}")
-
-
+    speak("What do you want to search")
+    s = sub(var1, var2)
+    webbrowser.open(f"https://www.google.com/search?q={s}")
 def youtube():
     var1 = myCommand()
     var2 = "youtube"
-
-    def sub(a, b):
-        return "".join(a.rsplit(b))
-
-    v = sub(var1, var2)
-
-    webbrowser.open(f"https://www.youtube.com/search?q={v}")
-
-
+    y = sub(var1, var2)
+    webbrowser.open(f"https://www.youtube.com/search?q={y}")
 def dictionary():
     var1 = query
     var2 = "tell me the meaning of"
-
-    def sub(a, b):
-        return "".join(a.rsplit(b))
-
-    v = sub(var1, var2)
-
-    webbrowser.open(f"https://www.collinsdictionary.com/dictionary/english/{v}")
-
-
+    d = sub(var1, var2)
+    webbrowser.open(f"https://www.collinsdictionary.com/dictionary/english/{d}")
 def jokes():
     call = random.randint(0, 7)
     jokes = (
@@ -86,12 +55,7 @@ def jokes():
     )
     speak("ok! let me tell you a joke")
     speak(jokes[call])
-
-
 def facts():
-    call = random.randint(0, 4)
-    call2 = random.randint(5, 9)
-    call3 = random.randint(10, 13)
     facts = (
         "Mawsynram, a village on the Khasi Hills, Meghalaya, receives the highest recorded average rainfall in the world.",
         "Bandra Worli Sealink has steel wires equal to the earths circumference",
@@ -107,73 +71,44 @@ def facts():
         "THE RIG VEDA IS THE OLDEST KNOWN BOOK IN THE WORLD",
         "The original name in Sanskrit for Hinduism is Sanatana Dharma. The word Hindu or Indu was used by Greeks to describe the people living around the Indus River.",
     )
-    speak("ok let me you some facts ")
-    speak(facts[call])
-    speak(facts[call3])
-    speak(facts[call2])
-
-
-def zomato():
-    import requests
-
-    res = requests.get("https://ipinfo.io/")
-    data = res.json()
-    food = data["region"]
-    webbrowser.open(f"https://www.zomato.com/{food}")
-
-
-def mapstogo():
-    def map2():
-        r = sr.Recognizer()
-        with sr.Microphone() as source:
-            speak("where do you want to go")
-            print("where do you want to go?")
-            print("Listening.....")
-            r.energy_threshold = 200
-            r.pause_threshold = 4
-            audio = r.listen(source)
-
-        try:
-
-            location = r.recognize_google(audio, language="en-in")
-            speak("showing the route")
-
-        except Exception as e:
-            speak("Sorry Sir, please repeat!")
-            query = str(input("Command: "))
-            return "None"
+    speak("ok let me tell you some facts ")
+    for i in range(3):
+        call = random.randint(i, 13)
+        speak(facts[call])
+def maps():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        speak("Where Do You Want To Go")
+        print("Listening.....")
+        r.energy_threshold = 200
+        r.pause_threshold = 4
+        audio = r.listen(source)
+    try:
+        location = r.recognize_google(audio, language="en-in")
+        speak("Showing The Route")
         return location
-
+    except Exception:
+        speak("Sorry, Please Type")
+        location = str(input("Command: "))
+        return location
     webbrowser.open(f"https://www.googlemaps.com/search?q={location}")
-
-
 if __name__ == "__main__":
     while True:
         query = myCommand().lower()
-        if "tell me something about" in query:
-            speak("Searching")
-            query = query.replace("tell me something about", "")
-            results = google.summary(query, sentences=20)
-            results2 = google.summary(query, sentences=2)
-            print(results)
-            speak("Sir")
-            speak(results2)
-            speak("for more info read the following ")
-
-        elif "open youtube" in query:
+        if "youtube" in query:
             webbrowser.open("youtube.com")
 
-        elif "open google" in query:
+        elif "google" in query:
             webbrowser.open("google.com")
 
-        elif "open wikipedia" in query:
+        elif "wikipedia" in query:
             webbrowser.open("wikipedia.com")
 
         elif "news" in query:
-            webbrowser.open("https://www.firstpost.com")
+            webbrowser.open("https://timesofindia.indiatimes.com")
 
         elif "shop" in query:
-            webbrowser.open("https://www.flipkart.com")
+            webbrowser.open("https://www.amazon.in")
 
         elif "search" in query:
             search()
@@ -181,41 +116,16 @@ if __name__ == "__main__":
         elif "tell me the meaning" in query:
             dictionary()
 
-        elif " music" in query:
-            music_dir = "C:\\Users\\PRACHI\\Music\\"
-            songs = os.listdir(music_dir)
-            os.startfile(os.path.join(music_dir, songs[1]))
-
         elif " bore" in query:
             jokes()
 
-        elif "knowledge" in query:
+        elif "facts" in query:
             facts()
 
-        elif "food" in query:
-            zomato()
-
-        elif "open code" in query:
-            code_path = (
-                "C:\\Users\\PRACHI\\Desktop\\Lovish\\VSCode-win32-ia32-1.34.0\\code.exe"
-            )
-            os.startfile(code_path)
-
-        elif "want to go" in query:
-            mapstogo()
-
-        elif "prime minister of india" in query:
-            print("Narendra Modi")
-            speak("narendra modi")
-        elif "oldest religion" in query:
-            print("hinduism")
-            speak("hinduism")
+        elif "go to" in query:
+            maps()
 
         elif "exit" in query:
-            print("Bye...")
-            speak("Bye...............")
+            print("Exited")
+            speak("Exiting")
             exit()
-        elif "stop" in query:
-            v = input("when to resume?")
-            if "resume" in query:
-                myCommand()
