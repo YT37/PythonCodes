@@ -141,4 +141,34 @@ def duplicate(name):
 
 students = "Aman Ankit Deepak Aman Deepak Amit Ankit Vansh Aman Sagar"
 duplicate(students)"""
-"""Problem18"""
+"""Problem18
+fish = [12, 13, 8, 10, 17]
+fish.sort()
+large = fish[len(fish) - 1]
+print(f"The Largest Fish Lefty Caught Was {large} Feet")"""
+"""Problem19
+print(u"\u003B")"""
+"""Problem20
+summ = 0
+for i in range(0, 8):
+    summ = summ + 8
+print(f"The Square Of 8 Is {summ}")"""
+"""Problem21
+h = int(input("Enter Hour : "))
+m = int(input("Enter Minute : "))
+if h < 0 or m < 0 or h > 12 or m > 60:
+    print("Wrong Input!")
+if h == 12:
+    h = 0
+if m == 60:
+    m = 0
+angleh = 0.5 * (h * 60 + m)
+anglem = 6 * m
+angle = abs(angleh - anglem)
+angle = min(360 - angle, angle)
+if angle == 0:
+    print("The Hands Overlap")
+else:
+    print(f"The Angle Of The Clock Is {angle}")"""
+"""Problem22"""
+
