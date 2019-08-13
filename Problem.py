@@ -170,5 +170,25 @@ if angle == 0:
     print("The Hands Overlap")
 else:
     print(f"The Angle Of The Clock Is {angle}")"""
-"""Problem22"""
-
+"""Problem22
+year = int(input("Enter A Year : "))
+flag = False
+if (year % 4) == 0:
+    if (year % 100) == 0:
+        if (year % 400) == 0:
+            flag = True
+        else:
+            flag = False
+    else:
+        flag = True
+else:
+    flag = False
+if flag:
+    print(f"{year} Is A Leap Year")
+else:
+    print(f"{year} Is Not A Leap Year")"""
+"""Problem22
+no = int(input("Enter A Nuber To Convert To Binary : "))
+binary = format(no, "b")
+print(f"{no} Is {binary} In Binary")"""
+"""Problem23"""
