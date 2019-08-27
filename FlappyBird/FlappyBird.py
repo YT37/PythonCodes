@@ -54,9 +54,9 @@ class Bird:
 
     def move(self):
         self.tickCou += 1
-        disp = self.vel*(self.tickCou) + 0.5*(3)*(self.tickCou)**2
+        disp = self.vel * (self.tickCou) + 0.5 * (3) * (self.tickCou) ** 2
         if disp >= 16:
-            disp = (disp/abs(disp)) * 16
+            disp = (disp / abs(disp)) * 16
         if disp < 0:
             disp -= 2
         self.y = self.y + disp
@@ -125,7 +125,7 @@ class Pipes:
         bottomOffset = (self.x - bird.x, self.bottom - round(bird.y))
         bPoint = birdMask.overlap(bottomMask, bottomOffset)
         tPoint = birdMask.overlap(topMask, topOffset)
-        if bPoint or  tPoint:
+        if bPoint or tPoint:
             return True
         return False
 
@@ -172,7 +172,7 @@ def drawWin(win, birds, base, pipes, score, genn):
     win.blit(text, (winWidth - 10 - text.get_width(), 10))
     text = statFont.render("Gens: " + str(genn), 1, (255, 255, 255))
     win.blit(text, (10, 10))
-    text = statFont.render("Alive: " + str(len(birds)),1,(255,255,255))
+    text = statFont.render("Alive: " + str(len(birds)), 1, (255, 255, 255))
     win.blit(text, (10, 50))
     pg.display.update()
 
@@ -214,9 +214,9 @@ def main(genomes, config):
             ):
                 pipeCount = 1
         for x, bird in enumerate(birds):
-            bird.move()
             gens[x].fitness += 0.1
-            output = nets[x].activate(
+            bird.move()
+            output = nets[birds.index(bird)].activate(
                 (
                     bird.y,
                     abs(bird.y - pipes[pipeCount].height),
@@ -227,26 +227,22 @@ def main(genomes, config):
                 bird.jump()
 
         for pipe in pipes:
+            pipe.move()
             for x, bird in enumerate(birds):
                 if pipe.collide(bird):
                     gens[x].fitness -= 1
-                    birds.pop(x)
                     nets.pop(x)
                     gens.pop(x)
-
+                    birds.pop(x)
                 if bird.y + bird.img.get_height() >= 730:
                     birds.pop(x)
                     nets.pop(x)
                     gens.pop(x)
-
-                if not pipe.passed and pipe.x < bird.x:
-                    pipe.passed = True
-                    addPipe = True
-
             if pipe.x + pipe.pipeTop.get_width() < 0:
                 rem.append(pipe)
-            pipe.move()
-
+            if not pipe.passed and pipe.x < bird.x:
+                pipe.passed = True
+                addPipe = True
         if addPipe:
             for g in gens:
                 g.fitness += 5
@@ -255,9 +251,11 @@ def main(genomes, config):
 
         for r in rem:
             pipes.remove(r)
+
         base.move()
         drawWin(win, birds, base, pipes, score, gen)
-        
+
+
 def run(path):
     config = neat.config.Config(
         neat.DefaultGenome,
@@ -271,7 +269,7 @@ def run(path):
     popu.add_reporter(neat.StdOutReporter(True))
     popu.add_reporter(stats)
     winner = popu.run(main, 50)
-    print('\nBest genome:\n{!s}'.format(winner))
+    print("\nBest genome:\n{!s}".format(winner))
 
 
 if __name__ == "__main__":
