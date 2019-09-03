@@ -2,18 +2,22 @@ def isprime(num):
     for i in range(2, num):
         if (num % i) == 0:
             return False
+
     return True
 
 
 def getPrimes(max_number):
-    list_of_primes = []
+    primesLst = []
+
     for num1 in range(2, max_number):
         if isprime(num1):
-            list_of_primes.append(num1)
-    return list_of_primes
+            primesLst.append(num1)
+
+    return primesLst
 
 
 maxNum = int(input("Search For Primes Up To : "))
-list_of_primes = getPrimes(maxNum)
-for prime in list_of_primes:
+
+primes = getPrimes(maxNum)
+for prime in primes:
     print(prime)

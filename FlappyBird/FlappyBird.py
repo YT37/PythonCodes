@@ -1,8 +1,8 @@
-import pygame as pg
-import neat
-import time
-import random
 import os
+import random
+import time
+import neat
+import pygame as pg
 
 winWidth = 500
 winHeight = 800

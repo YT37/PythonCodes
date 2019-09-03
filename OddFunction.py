@@ -1,15 +1,18 @@
 def odd(num):
     if num % 2 == 0:
         return False
+
     else:
         return True
-    
 
-def changeList(list, func):
+
+def changeList(blist, func):
     oddList = []
-    for i in list:
+
+    for i in blist:
         if func(i):
             oddList.append(i)
+
     return oddList
 
 

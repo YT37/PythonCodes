@@ -10,11 +10,11 @@ class Warrior:
         self.blockMax = blockMax
 
     def attack(self):
-        attkAmt = self.attkMax * (random.random() + .5)
+        attkAmt = self.attkMax * (random.random() + 0.5)
         return attkAmt
 
     def block(self):
-        blockAmt = self.blockMax * (random.random() + .5)
+        blockAmt = self.blockMax * (random.random() + 0.5)
         return blockAmt
 
 
@@ -31,17 +31,26 @@ class Battle:
     @staticmethod
     def getAttackResult(warriorA, warriorB):
         warriorAAttkAmt = warriorA.attack()
+
         warriorBBlockAmt = warriorB.block()
+
         damage2WarriorB = math.ceil(warriorAAttkAmt - warriorBBlockAmt)
+
         warriorB.health = warriorB.health - damage2WarriorB
-        print("{} attacks {} and deals {} damage".format(warriorA.name,
-                                                         warriorB.name, damage2WarriorB))
-        print("{} is down to {} health".format(warriorB.name,
-                                               warriorB.health))
+
+        print(
+            "{} attacks {} and deals {} damage".format(
+                warriorA.name, warriorB.name, damage2WarriorB
+            )
+        )
+        print("{} is down to {} health".format(warriorB.name, warriorB.health))
+
         if warriorB.health <= 0:
-            print("{} has Died and {} is Victorious".format(warriorB.name,
-                                                            warriorA.name))
+            print(
+                "{} has Died and {} is Victorious".format(warriorB.name, warriorA.name)
+            )
             return "Game Over"
+
         else:
             return "Fight Again"
 

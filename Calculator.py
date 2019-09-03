@@ -1,74 +1,57 @@
 import time
 
 
-def add(num1, num2):
-    """Returns num1 plus num2"""
-    return num1 + num2
-
-
-def sub(num1, num2):
-    """Returns num1 minus num2"""
-    return num1 - num2
-
-
-def mul(num1, num2):
-    """Returns num1 times num2"""
-    return num1 * num2
-
-
-def div(num1, num2):
-    """Returns num1 divided by num2"""
-    try:
-        return num1 / num2
-    except ZeroDivisionError:
-        print("Handled Div By Zero. Returning Zero")
-        return 0
-
-
-def runOperation(operation, num1, num2):
-    """Determines the operation to run based on the
-    operation argument which should be passed in as an int"""
-    # Determine operation
-    if operation == 1 or operation == '+':
+def calc(num1, num2, sym):
+    if sym == 1 or sym == "+":
         print("Adding Numbers...")
         time.sleep(1)
-        print(add(num1, num2))
+        print(num1 + num2)
 
-    elif operation == 2 or operation == '-':
+    elif sym == 2 or sym == "-":
         print("Subtracting Numbers...")
         time.sleep(1)
-        print(sub(num1, num2))
+        print(num1 - num2)
 
-    elif operation == 3 or operation == '*':
+    elif sym == 3 or sym == "*":
         print("Multiplying Numbers...")
         time.sleep(1)
-        print(mul(num1, num2))
+        print(num1 * num2)
 
-    elif operation == 4 or operation == '/':
+    elif sym == 4 or sym == "/":
         print("Dividing Numbers...")
         time.sleep(1)
-        print(div(num1, num2))
 
-    else:
-        print("Retry")
+        try:
+            print(num1 / num2)
+
+        except ZeroDivisionError:
+            print("Handled Div By Zero. Returning Zero")
+            print("0")
 
 
 def result():
-    """Allows User To Run Basic Calculator Operations With Two Numbers."""
-    valiant = False
-    while not valiant:
-        # Get user input
+    valint = False
+
+    while not valint:
         try:
             num1 = int(input("Enter Number 1 : "))
             num2 = int(input("Enter Number 2 : "))
-            ooperation = int(input('What Do You Want To Do ? 1. Add, 2. Subtract, 3. Multiply Or 4. Divide.'
-                                  'Enter Number: '))
-            valiant = True
+            sym = int(
+                input(
+                    "What Do You Want To Do ? 1. Add, 2. Subtract, 3. Multiply Or 4. Divide."
+                    "Enter Number: "
+                )
+            )
+
+            valint = True
+
         except ValueError:
             print("Invalid Input. Please Try Again... ")
+
         except:
             print("Unknown Error")
-        runOperation(ooperation, num1, num2)
+
+        calc(num1, num2, sym)
 
 
 result()
