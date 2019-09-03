@@ -192,3 +192,4 @@ no = int(input("Enter A Nuber To Convert To Binary : "))
 binary = format(no, "b")
 print(f"{no} Is {binary} In Binary")"""
 """Problem23"""
+
