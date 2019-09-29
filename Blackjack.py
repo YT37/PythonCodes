@@ -174,6 +174,7 @@ def push(player, dealer):
     print("Dealer and Player Tie! It's A Push.")
 
 
+total = 100
 while True:
     print(
         "Welcome To BlackJack! Get As Close To 21 As You Can Without Going Over!\n\
@@ -190,7 +191,7 @@ while True:
     dealerHand.addCard(deck.deal())
     dealerHand.addCard(deck.deal())
 
-    playerChips = Chips()
+    playerChips = Chips(total)
     takeBet(playerChips)
 
     showSome(playerHand, dealerHand)
@@ -227,6 +228,7 @@ while True:
 
     if newGame[0].lower() == "y":
         playing = True
+        totalp += playerChips.total
         continue
 
     else:

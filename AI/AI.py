@@ -32,7 +32,7 @@ months = [
 ]
 days = ["Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday", "Sunday"]
 daysExt = ["st", "nd", "rd", "th"]
-calStrs = ["What do i have", "do i have plans", "am i busy"]
+calStrs = ["What do i have", "do i have plans", "busy"]
 noteStrs = ["make a note", "write this down", "remember this"]
 
 
@@ -98,7 +98,9 @@ def getevent(days, s):
                 startTime = startTime + "AM"
 
             else:
-                startTime = str(int(startTime.split(":")[0]) - 12)
+                startTime = (
+                    str(int(startTime.split(":")[0]) - 12) + startTime.split(":")[1]
+                )
                 startTime = startTime + "PM"
 
             speak(event["summary"] + "At" + startTime)
@@ -126,7 +128,7 @@ def audio():
         except Exception as e:
             print("Exception : " + str(e))
 
-    return said
+    return said.lower()
 
 
 def getDate(text):
@@ -197,23 +199,29 @@ def note(text):
     subprocess.Popen(["notepad.exe", fileName])
 
 
+wake = "yog"
 service = authenticate()
 print("Start")
-text = audio()
+while True:
+    text = audio()
 
-for phrase in calStrs:
-    if phrase in text:
-        date = getDate(text)
+    if text.count(wake) > 0:
+        speak("I Am Ready")
+        text = audio()
 
-        if date:
-            getevent(date, service)
+    for phrase in calStrs:
+        if phrase in text:
+            date = getDate(text)
 
-        else:
-            speak("Please Try Again")
+            if date:
+                getevent(date, service)
 
-for phrase in noteStrs:
-    if phrase in text:
-        speak("What Would You Like Me To Write Down ?")
-        noteText = audio().lower()
-        note(noteText)
-        speak("I've Made A Note Of That.")
+            else:
+                speak("Please Try Again")
+
+    for phrase in noteStrs:
+        if phrase in text:
+            speak("What Would You Like Me To Write Down ?")
+            noteText = audio()
+            note(noteText)
+            speak("I've Made A Note Of That.")
