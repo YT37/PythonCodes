@@ -3,13 +3,13 @@ from time import sleep as s
 
 scorePlay = 0
 scoreComp = 0
+breaker = False
 
 print(
     "This Is A Classic Game Of Rock, Paper And Scissor, \nGet To The Final Score You Decided \nBefore The Computer And You Win"
 )
 
 moves = ["Rock", "Paper", "Scissor"]
-
 while True:
     try:
         s(2)
@@ -21,14 +21,37 @@ while True:
                     print(
                         f"Computer Is The Overall Winner By {scoreComp-scorePlay} Points"
                     )
-                    break
+
+                    replay = input("Want To Play Again(Yes/No) : ")
+
+                    if replay[0].lower() == "y":
+                        s(2)
+                        scoreFin = int(input("What Is The Winning Score : "))
+                        scorePlay = 0
+                        scoreComp = 0
+                        continue
+
+                    else:
+                        breaker = True
+                        break
 
                 else:
                     print(
                         f"You Are The Overall Winner By "
                         f"{scorePlay-scoreComp} Points"
                     )
-                    break
+                    replay = input("Want To Play Again(Yes/No) : ")
+
+                    if replay[0].lower() == "y":
+                        s(2)
+                        scoreFin = int(input("What Is The Winning Score : "))
+                        scorePlay = 0
+                        scoreComp = 0
+                        continue
+
+                    else:
+                        breaker = True
+                        break
 
             s(0.5)
             comp = c(moves)
@@ -93,3 +116,10 @@ while True:
     except ValueError:
         print("Enter A Number")
         continue
+
+    except IndexError:
+        print("Enter A String")
+        continue
+
+    if breaker:
+        break
