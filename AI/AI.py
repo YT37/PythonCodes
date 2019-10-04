@@ -199,7 +199,7 @@ def note(text):
     subprocess.Popen(["notepad.exe", fileName])
 
 
-wake = "yog"
+wake = "max"
 service = authenticate()
 print("Start")
 while True:
