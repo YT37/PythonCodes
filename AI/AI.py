@@ -32,8 +32,8 @@ months = [
 ]
 days = ["Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday", "Sunday"]
 daysExt = ["st", "nd", "rd", "th"]
-calStrs = ["What do i have", "do i have plans", "busy"]
-noteStrs = ["make a note", "write this down", "remember this"]
+calStrs = ["What do i have", "do i have plans", "busy", "on", ""]
+noteStrs = ["make a note", "write this down", "remember this", "note"]
 
 
 def authenticate():
@@ -84,26 +84,26 @@ def getevent(days, s):
     events = eventResult.get("items", [])
 
     if not events:
-        print("No upcoming events found.")
-
+        speak("No upcoming events found.")
     else:
-        speak(f"You have {len(events)} Events On This Day.")
+        speak(f"You have {len(events)} events on this day.")
 
         for event in events:
             start = event["start"].get("dateTime", event["start"].get("date"))
-            print(start, event["summary"])
-            startTime = str(start.split("T")[1].split("-")[0])
 
-            if int(startTime.split(":")[0]) < 12:
-                startTime = startTime + "AM"
+            try:
+                print(start, event["summary"])
+                startT = str(start.split("T")[1].split("-")[0])
+                if int(startT.split(":")[0]) < 12:
+                    startT = startT + "am"
+                else:
+                    startT = str(int(startT.split(":")[0]) - 12) + startT.split(":")[1]
+                    startT = startT + "pm"
 
-            else:
-                startTime = (
-                    str(int(startTime.split(":")[0]) - 12) + startTime.split(":")[1]
-                )
-                startTime = startTime + "PM"
+                speak(event["summary"] + " at " + startT)
 
-            speak(event["summary"] + "At" + startTime)
+            except IndexError:
+                speak(event["summary"] + "all day")
 
 
 def speak(text):
@@ -199,7 +199,7 @@ def note(text):
     subprocess.Popen(["notepad.exe", fileName])
 
 
-wake = "max"
+wake = "yog"
 service = authenticate()
 print("Start")
 while True:
