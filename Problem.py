@@ -187,9 +187,115 @@ if flag:
     print(f"{year} Is A Leap Year")
 else:
     print(f"{year} Is Not A Leap Year")"""
-"""Problem22
+"""Problem23
 no = int(input("Enter A Nuber To Convert To Binary : "))
 binary = format(no, "b")
 print(f"{no} Is {binary} In Binary")"""
-"""Problem23"""
+"""Problem24
+numMap = [
+    (1000, "M"),
+    (900, "CM"),
+    (500, "D"),
+    (400, "CD"),
+    (100, "C"),
+    (90, "XC"),
+    (50, "L"),
+    (40, "XL"),
+    (10, "X"),
+    (9, "IX"),
+    (5, "V"),
+    (4, "IV"),
+    (1, "I"),
+]
 
+
+def roman(num):
+    ro = ""
+
+    while num > 0:
+        for i, r in numMap:
+            while num >= i:
+                ro += r
+                num - +i
+
+    return ro
+
+
+j = int(input("Julius's Books : "))
+n = int(input("Nancy's Books : "))
+val = j + n
+print(f"Books = {roman(val)}")"""
+"""Problem 25
+pwd = input("Enter Password : ")
+sym = ["$", "@", "#", "%"]
+val = True
+
+if len(pwd) < 6:
+    print("Password should be at least 6 charecters")
+    val = False
+
+if len(pwd) > 20:
+    print("Password should not be more than 20 charecters")
+    val = False
+
+if not any(char.isdigit() for char in pwd):
+    print("Password should have at least 1 number")
+    val = False
+
+if not any(char.isupper() for char in pwd):
+    print("Password should have at least 1 uppercase letter")
+    val = False
+
+if not any(char.islower() for char in pwd):
+    print("Password should have at least 1 lowercase letter")
+    val = False
+
+if not any(char in sym for char in pwd):
+    print("Password should have at least 1 special symbol")
+    val = False
+
+if val:
+    print("Password is valid")
+
+elif not val:
+    print("Passwword is invalid")"""
+"""Problem 26
+c = float(input("Enter Temperature In Celsius : "))
+f = (c * 1.8) + 32
+print(f"Temperature =  {f} °F")"""
+"""Problem 27
+inch = 0.394
+m = 0.01
+km = 0.00001
+
+cm = int(input("Enter Length In CM : "))
+
+print(f"Inch = {inch*cm}")
+print(f"Meter = {m*cm}")
+print(f"KilloMeter = {km*cm}")"""
+"""Problem 28
+year = 60 * 24 * 365
+m = 13772160
+years = int((m / year))
+print(f"Dave is {years} old")"""
+"""Problem 29
+d = float(input("Enter Distance In Meters : "))
+hr = float(input("Enter Hours : "))
+m = float(input("Enter Minutes : "))
+s = float(input("Enter Seconds : "))
+
+time = (hr * 3600) + (m * 60) + s
+kph = (d / 1000.0) / (time / 3600.0)
+mph = kph * 1.609
+
+print(f"Speed is {mph} Miles Per Hour")"""
+"""Problem 30
+first = int(input("Enter 1st No."))
+second = int(input("Enter 2nd No."))
+
+print(f"Sum = {first+second}")
+print(f"Difference = {first-second}")
+print(f"Product = {first*second}")
+print(f"Average = {(first+second)/2}")
+print(f"Max = {max(first,second)}")
+print(f"Min = {min(first,second)}")"""
