@@ -28,3 +28,23 @@ cursor = db.cursor()
 # cursor.execute("DESCRIBE Info")
 
 # cursor.execute("ALTER TABLE Info CHANGE Name firstName VARCHAR(10)")
+users = [("Yug", "Yug"), ("Yug1", "Yug1"), ("Yug2", "Yug2")]
+scores = [(45, 100), (30, 200), (25, 300)]
+
+q1 = "CREATE TABLE Users (ID int PRIMARY KEY AUTO_INCREMENT,Name VARCHAR(50),Pwd VARCHAR(50))"
+
+q2 = "CREATE TABLE Scores (UserID int PRIMARY KEY,FOREIGN KEY(UserID) REFERENCES Users(ID) ,Game1 int DEFAULT 0,Game2 int DEFAULT 0)"
+
+q3 = "INSERT INTO Users (Name,Pwd) VALUES (%s,%s)"
+
+q4 = "INSERT INTO Scores (UserID,Game1,Game2) VALUES (%s,%s,%s)"
+
+# for x, y in enumerate(users):
+#     cursor.execute(q3, y)
+#     last = cursor.lastrowid
+#     cursor.execute(q4, (last,) + scores[x])
+# db.commit()
+
+# cursor.execute("SELECT * FROM Scores")
+# for x in cursor:
+#     print(x)
