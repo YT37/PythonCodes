@@ -1,7 +1,7 @@
-import mysql.connector
+from mysql import connector
 from datetime import datetime
 
-db = mysql.connector.connect(
+db = connector.connect(
     host="localhost", user="root", passwd="Agasthya4572$:my", database="Test"
 )
 
@@ -14,7 +14,7 @@ cursor = db.cursor()
 
 # cursor.execute(
 #     "INSERT INTO Info (Name,Created,Gender) VALUES (%s,%s,%s)",
-#     ("Krish", datetime.now(), "M"),
+#     ("ABC", datetime.now(), "M"),
 # )
 
 # db.commit()
