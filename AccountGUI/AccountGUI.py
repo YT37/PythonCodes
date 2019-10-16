@@ -25,16 +25,55 @@ global emailVal
 
 def enterUser():
     cursor.execute(
-        "INSERT INTO userInfo (Username,Password) VALUES (%s,%s,%s)",
-        (emailVal.get().lower(), pwdHash.hash(pwdVal.get())),
+        "INSERT INTO userInfo (Username,Password) VALUES ('%s','%s')"
+        % ((emailVal.get().lower()), (pwdHash.hash(pwdVal.get())))
     )
+    emVal = emailVal.get().lower()
     db.commit()
+    welcome(emVal)
+
+
+def delete(email, win):
+    cursor.execute("DELETE FROM userInfo WHERE Username = '%s'" % (email))
+    db.commit()
+    win.destroy()
+
+
+def welcome(email):
     mainWin.destroy()
-
-
-def welcome():
     win = t.Tk()
-    pass
+    win.title("Account")
+    win.geometry("320x200")
+    win.config(bg="black")
+    em = str(email).split("@")
+    welLabel = t.Label(
+        win,
+        text=f"Welcome, {em[0].capitalize()}",
+        bg="black",
+        fg="white",
+        font=("Helvetica", "11"),
+    )
+    welLabel.grid(row=0, column=0, padx=5, pady=5)
+
+    deleteUser = t.Button(
+        win,
+        text="Delete User",
+        bg="white",
+        fg="black",
+        font=("Helvetica", "11"),
+        command=lambda: delete(email, win),
+    )
+    deleteUser.grid(row=1, column=0, padx=5, pady=5)
+
+    logOut = t.Button(
+        win,
+        text="Log Out",
+        bg="white",
+        fg="black",
+        font=("Helvetica", "11"),
+        command=lambda: win.destroy(),
+    )
+    logOut.grid(row=2, column=0, padx=5, pady=5)
 
 
 def logIn():
@@ -43,25 +82,22 @@ def logIn():
     for user in cursor:
         if emailVal.get().lower() == str(user)[2:-3]:
             cursor.execute(
-                "SELECT Password FROM userInfo WHERE Username = '%s'"
-                % (emailVal.get().lower())
+                f"SELECT Username,Password FROM userInfo WHERE Username = '{emailVal.get().lower()}'"
             )
 
             for passwd in cursor:
-                print(str(passwd)[2:-3])
-                print(pwdVal.get())
-                if pwdHash.verify(str(pwdVal.get()), str(passwd)[2:89]):
-                    print("Validated")
-                    welcome()
+                if pwdHash.verify(pwdVal.get(), str(passwd)[17:-2]):
+                    emVal = emailVal.get().lower()
+                    welcome(emVal)
                 else:
                     messagebox.showinfo(
                         "Wrong Password", "The Password You Entered Is Wrong, Try Again"
                     )
-
-
-def delete():
-    cursor.execute("DELETE FROM userInfo WHERE Username = ''")
-    db.commit()
+        else:
+            messagebox.showinfo(
+                "Not Registered",
+                "The Email You Entered Is Wrong Or Either Not Registered",
+            )
 
 
 def signUp():
@@ -83,6 +119,8 @@ def signUp():
                             "User Already Registered",
                             "Email Is In Use For An Account Use Another One",
                         )
+                        mainWin.title("Log In")
+                        mainWin.iconbitmap("LogIn.ico")
 
                     else:
                         enterUser()
@@ -102,6 +140,7 @@ mainWin.iconbitmap("LogIn.ico")
 mainWin.title("Log In")
 mainWin.geometry("320x200")
 mainWin.config(bg="black")
+
 
 emailVal = t.StringVar()
 pwdVal = t.StringVar()
@@ -163,10 +202,3 @@ signUpb = t.Button(mainWin, text="Sign Up", font=("Helvetica", "11"), command=si
 signUpb.grid(row=4, column=1, padx=5, pady=5)
 
 mainWin.mainloop()
-
-
-cursor.execute("SELECT Username,Password,ID FROM userInfo ORDER BY ID ASC")
-for x in cursor:
-    print(x)
-# cursor.execute("ALTER TABLE userInfo AUTO_INCREMENT = 0")
-# db.commit()
