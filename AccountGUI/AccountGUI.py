@@ -9,7 +9,6 @@ pwdHash = CryptContext(
     default="pbkdf2_sha256",
     pbkdf2_sha256__default_rounds=30000,
 )
-# TODO Welcome And Delete
 
 db = connector.connect(
     host="localhost", user="root", passwd="Agasthya4572$:my", database="Users"
