@@ -1,4 +1,5 @@
 import re
+import os
 import tkinter as t
 from tkinter import messagebox
 from mysql import connector
@@ -9,27 +10,21 @@ pwdHash = CryptContext(
     default="pbkdf2_sha256",
     pbkdf2_sha256__default_rounds=30000,
 )
-
 db = connector.connect(
-    host="localhost", user="root", passwd="Agasthya4572$:my", database="Users"
+    host="localhost", user="root", passwd=os.environ.get("Password"), database="Users"
 )
 
 cursor = db.cursor(buffered=True)
 
 
-global mainWin
-global pwdVal
-global emailVal
-
-
-def enterUser():
+def enterUser(email, pwd, win):
     cursor.execute(
         "INSERT INTO userInfo (Username,Password) VALUES ('%s','%s')"
-        % ((emailVal.get().lower()), (pwdHash.hash(pwdVal.get())))
+        % (email.lower(), pwdHash.hash(pwd))
     )
-    emVal = emailVal.get().lower()
+    emVal = email.lower()
     db.commit()
-    welcome(emVal)
+    welcome(emVal, win)
 
 
 def delete(email, win):
@@ -38,16 +33,18 @@ def delete(email, win):
     win.destroy()
 
 
-def welcome(email):
-    mainWin.destroy()
+def welcome(email, oldWin):
+    oldWin.destroy()
     win = t.Tk()
     win.title("Account")
     win.geometry("320x200")
     win.config(bg="black")
-    em = str(email).split("@")
+
+    emailSt = str(email).split("@")
+
     welLabel = t.Label(
         win,
-        text=f"Welcome, {em[0].capitalize()}",
+        text=f"Welcome, {emailSt[0].capitalize()}",
         bg="black",
         fg="white",
         font=("Helvetica", "11"),
@@ -60,7 +57,7 @@ def welcome(email):
         bg="white",
         fg="black",
         font=("Helvetica", "11"),
-        command=lambda: delete(email, win),
+        command=lambda: delete(email.lower(), win),
     )
     deleteUser.grid(row=1, column=0, padx=5, pady=5)
 
@@ -75,19 +72,17 @@ def welcome(email):
     logOut.grid(row=2, column=0, padx=5, pady=5)
 
 
-def logIn():
+def logIn(email, pwd, win):
     cursor.execute("SELECT Username FROM userInfo")
 
     for user in cursor:
-        if emailVal.get().lower() == str(user)[2:-3]:
-            cursor.execute(
-                f"SELECT Username,Password FROM userInfo WHERE Username = '{emailVal.get().lower()}'"
-            )
+        if email == str(user)[2:-3]:
+            cursor.execute(f"SELECT Password FROM userInfo WHERE Username = '{email}'")
 
             for passwd in cursor:
-                if pwdHash.verify(pwdVal.get(), str(passwd)[17:-2]):
-                    emVal = emailVal.get().lower()
-                    welcome(emVal)
+                if pwdHash.verify(str(pwd), str(passwd)[2:-3]):
+                    emVal = email
+                    welcome(emVal, win)
                 else:
                     messagebox.showinfo(
                         "Wrong Password", "The Password You Entered Is Wrong, Try Again"
@@ -99,32 +94,34 @@ def logIn():
             )
 
 
-def signUp():
-    mainWin.title("Sign Up")
-    mainWin.iconbitmap("SignUp.ico")
-    if re.search(r"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$", emailVal.get()):
-        if all(char.isalnum() for char in pwdVal.get()):
+def signUp(email, pwd, win):
+    win.title("Sign Up")
+    win.iconbitmap("SignUp.ico")
+
+    if re.search(r"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$", email):
+        if all(char.isalnum() for char in pwd):
             cursor.execute("SELECT count(*) as tot FROM userInfo")
 
             if (str(cursor.fetchone())[1]) == "0":
-                enterUser()
+                enterUser(email, pwd, win)
 
             else:
-                cursor.execute("SELECT Username FROM userInfo")
-
+                cursor.execute(
+                    f"SELECT Username FROM userInfo WHERE Username = '{email}'"
+                )
                 for user in cursor:
-                    if str(user)[2:-3] == str(emailVal.get()):
+                    if (str(type(user))[8:-2]) == "tuple":
                         messagebox.showinfo(
                             "User Already Registered",
                             "Email Is In Use For An Account Use Another One",
                         )
-                        mainWin.title("Log In")
-                        mainWin.iconbitmap("LogIn.ico")
+                        win.title("Log In")
+                        win.iconbitmap("LogIn.ico")
 
                     else:
-                        enterUser()
+                        enterUser(email, pwd, win)
 
-        elif not any(char.isalnum() for char in pwdVal.get()):
+        elif not any(char.isalnum() for char in pwd):
             messagebox.showinfo(
                 "Weak Password",
                 "The Password Should Contain At least One Uppercase And Lowercase Letter, One Digit",
@@ -134,70 +131,85 @@ def signUp():
         messagebox.showinfo("Incorrect Email", "Email Format Should Be (abc01@exp.abc)")
 
 
-mainWin = t.Tk()
-mainWin.iconbitmap("LogIn.ico")
-mainWin.title("Log In")
-mainWin.geometry("320x200")
-mainWin.config(bg="black")
+def main():
+    win = t.Tk()
+    win.iconbitmap("LogIn.ico")
+    win.title("Log In")
+    win.geometry("320x200")
+    win.config(bg="black")
+
+    emailVal = t.StringVar()
+    pwdVal = t.StringVar()
+
+    emailLabel = t.Label(
+        win, text="Email : ", bg="black", fg="white", font=("Helvetica", "11")
+    )
+    emailLabel.grid(row=0, column=0, padx=5, pady=5)
+
+    email = t.Entry(
+        win, textvariable=emailVal, bg="black", fg="white", font=("Helvetica", "9")
+    )
+    email.grid(row=0, column=1, padx=5, pady=5)
+
+    pwdLabel = t.Label(
+        win, text="Password : ", bg="black", fg="white", font=("Helvetica", "11")
+    )
+    pwdLabel.grid(row=1, column=0, padx=5, pady=5)
+
+    pwd = t.Entry(
+        win,
+        textvariable=pwdVal,
+        show="*",
+        bg="black",
+        fg="white",
+        font=("Helvetica", "9"),
+    )
+    pwd.grid(row=1, column=1, padx=5, pady=5)
+
+    passShow = t.Button(
+        win,
+        text="Show",
+        bg="black",
+        fg="white",
+        font=("Helvetica", "7"),
+        command=lambda: pwd.config(show=""),
+    )
+    passShow.grid(row=1, column=2)
+
+    passHide = t.Button(
+        win,
+        text="Hide",
+        bg="black",
+        fg="white",
+        font=("Helvetica", "7"),
+        command=lambda: pwd.config(show="*"),
+    )
+    passHide.grid(row=1, column=3)
+
+    logInb = t.Button(
+        win,
+        text="Log In",
+        font=("Helvetica", "11"),
+        command=lambda: logIn(emailVal.get().lower(), pwdVal.get(), win),
+    )
+    logInb.grid(row=2, column=1, padx=5, pady=5)
+
+    signUpLabel = t.Label(
+        win, text="New User ? Sign Up", font=("Helvetica", "11"), bg="black", fg="white"
+    )
+    signUpLabel.grid(row=3, column=1)
+
+    signUpb = t.Button(
+        win,
+        text="Sign Up",
+        font=("Helvetica", "11"),
+        command=lambda: signUp(emailVal.get().lower(), pwdVal.get(), win),
+    )
+    signUpb.grid(row=4, column=1, padx=5, pady=5)
+
+    win.mainloop()
 
 
-emailVal = t.StringVar()
-pwdVal = t.StringVar()
+if __name__ == "__main__":
+    main()
 
-emailLabel = t.Label(
-    mainWin, text="Email : ", bg="black", fg="white", font=("Helvetica", "11")
-)
-emailLabel.grid(row=0, column=0, padx=5, pady=5)
-
-email = t.Entry(
-    mainWin, textvariable=emailVal, bg="black", fg="white", font=("Helvetica", "9")
-)
-email.grid(row=0, column=1, padx=5, pady=5)
-
-pwdLabel = t.Label(
-    mainWin, text="Password : ", bg="black", fg="white", font=("Helvetica", "11")
-)
-pwdLabel.grid(row=1, column=0, padx=5, pady=5)
-
-pwd = t.Entry(
-    mainWin,
-    textvariable=pwdVal,
-    show="*",
-    bg="black",
-    fg="white",
-    font=("Helvetica", "9"),
-)
-pwd.grid(row=1, column=1, padx=5, pady=5)
-
-passShow = t.Button(
-    mainWin,
-    text="Show",
-    bg="black",
-    fg="white",
-    font=("Helvetica", "7"),
-    command=lambda: pwd.config(show=""),
-)
-passShow.grid(row=1, column=2)
-
-passHide = t.Button(
-    mainWin,
-    text="Hide",
-    bg="black",
-    fg="white",
-    font=("Helvetica", "7"),
-    command=lambda: pwd.config(show="*"),
-)
-passHide.grid(row=1, column=3)
-
-logInb = t.Button(mainWin, text="Log In", font=("Helvetica", "11"), command=logIn)
-logInb.grid(row=2, column=1, padx=5, pady=5)
-
-signUpLabel = t.Label(
-    mainWin, text="New User ? Sign Up", font=("Helvetica", "11"), bg="black", fg="white"
-)
-signUpLabel.grid(row=3, column=1)
-
-signUpb = t.Button(mainWin, text="Sign Up", font=("Helvetica", "11"), command=signUp)
-signUpb.grid(row=4, column=1, padx=5, pady=5)
-
-mainWin.mainloop()
