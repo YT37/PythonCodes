@@ -1,27 +1,12 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, render_template
 
 app = Flask(__name__)
 
-adminAccess = True
-
-
-@app.route("/")
-def home():
-    return "Welcome To The Home <h1>This Is Home</h1>"
-
 
 @app.route("/<name>")
-def user(name):
-    return f"Hello, {name}"
-
-
-@app.route("/admin")
-def admin():
-    if adminAccess:
-        return "Welcome Admin, What Would You Like To Change Today"
-
-    return redirect(url_for("home"))
+def home(name):
+    return render_template("index.html", name=name)
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
