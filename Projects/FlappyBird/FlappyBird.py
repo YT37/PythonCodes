@@ -13,28 +13,16 @@ pg.font.init()
 statFont = pg.font.SysFont("comicsans", 50)
 
 birdImg = [
-    pg.transform.scale2x(
-        pg.image.load("D:\\Codes\\PythonCodes\\FlappyBird\\Imgs\\Bird1.png")
-    ),
-    pg.transform.scale2x(
-        pg.image.load("D:\\Codes\\PythonCodes\\FlappyBird\\Imgs\\Bird2.png")
-    ),
-    pg.transform.scale2x(
-        pg.image.load("D:\\Codes\\PythonCodes\\FlappyBird\\Imgs\\Bird3.png")
-    ),
+    pg.transform.scale2x(pg.image.load("Imgs\\Bird1.png")),
+    pg.transform.scale2x(pg.image.load("Imgs\\Bird2.png")),
+    pg.transform.scale2x(pg.image.load("Imgs\\Bird3.png")),
 ]
 
-baseImg = pg.transform.scale2x(
-    pg.image.load("D:\\Codes\\PythonCodes\\FlappyBird\\Imgs\\Base.png")
-)
+baseImg = pg.transform.scale2x(pg.image.load("Imgs\\Base.png"))
 
-pipeImg = pg.transform.scale2x(
-    pg.image.load("D:\\Codes\\PythonCodes\\FlappyBird\\Imgs\\Pipe.png")
-)
+pipeImg = pg.transform.scale2x(pg.image.load("Imgs\\Pipe.png"))
 
-bgImg = pg.transform.scale2x(
-    pg.image.load("D:\\Codes\\PythonCodes\\FlappyBird\\Imgs\\BG.png")
-)
+bgImg = pg.transform.scale2x(pg.image.load("Imgs\\BG.png"))
 
 
 class Bird:
