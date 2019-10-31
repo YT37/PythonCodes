@@ -1,2 +1,6 @@
 # PythonCodes
-These Are The Codes Written In Python That I Have Written If You Want To Use Them You Can But They Are Not Commented And If You Want Any Info On Specific Projects Contact Me.
+
+1. These are the Snippets & Projects in Python.
+2. You are free to use them.
+3. But they are not commented.
+4. If you want any info on specific projects contact me.
