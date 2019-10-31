@@ -25,14 +25,14 @@ def calc(num1, num2, sym):
             print(num1 / num2)
 
         except ZeroDivisionError:
-            print("Handled Div By Zero. Returning Zero")
+            print("Can't Divide by Zero")
             print("0")
 
 
 def result():
-    valint = False
+    valInt = False
 
-    while not valint:
+    while not valInt:
         try:
             num1 = int(input("Enter Number 1 : "))
             num2 = int(input("Enter Number 2 : "))
@@ -43,7 +43,7 @@ def result():
                 )
             )
 
-            valint = True
+            valInt = True
 
         except ValueError:
             print("Invalid Input. Please Try Again... ")

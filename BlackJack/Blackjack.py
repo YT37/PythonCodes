@@ -228,7 +228,6 @@ while True:
 
     if newGame[0].lower() == "y":
         playing = True
-        totalp += playerChips.total
         continue
 
     else:

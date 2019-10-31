@@ -6,10 +6,10 @@ def isprime(num):
     return True
 
 
-def getPrimes(max_number):
+def getPrimes(maxNum):
     primesLst = []
 
-    for num1 in range(2, max_number):
+    for num1 in range(2, maxNum):
         if isprime(num1):
             primesLst.append(num1)
 
