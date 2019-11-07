@@ -30,9 +30,9 @@ months = [
     "November",
     "December",
 ]
-days = ["Monday", "Tuesday", "Wednesday", "Thurday", "Friday", "Saturday", "Sunday"]
+days = ["monday", "tuesday", "wednesday", "thurday", "friday", "saturday", "sunday"]
 daysExt = ["st", "nd", "rd", "th"]
-calStrs = ["What do i have", "do i have plans", "busy", "on", ""]
+calStrs = ["What do i have", "do i have plans", "busy", "on"]
 noteStrs = ["make a note", "write this down", "remember this", "note"]
 
 
@@ -107,7 +107,9 @@ def getevent(days, s):
 
 
 def speak(text):
-    engine = pyttsx3.init()
+    engine = pyttsx3.init("sapi5")
+    voices = engine.getProperty("voices")
+    engine.setProperty("voice", voices[0].id)
     engine.say(text)
     engine.runAndWait()
 
@@ -118,15 +120,19 @@ def audio():
     print("Listening....")
 
     with sr.Microphone() as source:
+        r.energy_threshold = 200
+        r.pause_threshold = 4
         aud = r.listen(source)
         said = ""
 
         try:
-            said = r.recognize_google(aud)
+            said = r.recognize_google(aud, language="en-in")
             print(said)
 
         except Exception as e:
             print("Exception : " + str(e))
+            speak("Sorry, please enter command")
+            said = str(input("Command: "))
 
     return said.lower()
 
