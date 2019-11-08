@@ -109,7 +109,9 @@ def getevent(days, s):
 def speak(text):
     engine = pyttsx3.init("sapi5")
     voices = engine.getProperty("voices")
-    engine.setProperty("voice", voices[0].id)
+    engine.setProperty("voice", voices[1].id)
+    engine.getProperty("rate")
+    engine.setProperty("rate", 150)
     engine.say(text)
     engine.runAndWait()
 
@@ -206,6 +208,7 @@ def note(text):
 
 
 wake = "max"
+stop = "stop"
 service = authenticate()
 print("Start")
 while True:
@@ -214,6 +217,10 @@ while True:
     if text.count(wake) > 0:
         speak("I Am Ready")
         text = audio()
+
+    if text.count(stop) > 0:
+        speak("Bye")
+        raise KeyboardInterrupt
 
     for phrase in calStrs:
         if phrase in text:
