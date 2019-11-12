@@ -4,7 +4,8 @@ import random
 import tkinter as tk
 import random
 
-#TODO implement Check
+# TODO implement Check
+
 
 def loadData():
     ques = {}
@@ -32,9 +33,7 @@ def loadData():
 def check(opt, ques):
     if opt:
         print(True)
-        ques.config(
-            text=pass
-        )
+        ques.config(text="hi")
     else:
         print("False")
 
