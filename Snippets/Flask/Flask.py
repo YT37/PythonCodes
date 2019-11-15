@@ -11,7 +11,7 @@ app.permanent_session_lifetime = timedelta(days=14)
 db = SQLAlchemy(app)
 
 
-class users(db.Model):
+class Users(db.Model):
     _id = db.Column("ID", db.Integer, primary_key=True)
     name = db.Column("Name", db.String(100))
     email = db.Column("Email", db.String(100))
@@ -23,16 +23,37 @@ class users(db.Model):
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    if "user" in session:
+        return render_template("index.html", name=session["user"])
+
+    else:
+        return render_template("index.html", name="LogIn")
+
+
+@app.route("/view")
+def view():
+    return render_template("view.html", values=Users.query.all())
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
         session.permanent = True
-        session["user"] = request.form["nm"]
+        user = request.form["nm"]
+        session["user"] = user
+
+        foundUser = Users.query.filter_by(name=user).first()
+
+        if foundUser:
+            session["email"] = foundUser.email
+
+        else:
+            db.session.add(Users(user, ""))
+            db.session.commit()
+
         flash("Logged In", "info")
         return redirect(url_for("user"))
+
     else:
         if "user" in session:
             flash("Already Logged In", "info")
@@ -49,6 +70,11 @@ def user():
         if request.method == "POST":
             email = request.form["email"]
             session["email"] = email
+
+            foundUser = Users.query.filter_by(name=session["user"]).first()
+            foundUser.email = email
+            db.session.commit()
+
             flash("Email Was Saved")
 
         else:
