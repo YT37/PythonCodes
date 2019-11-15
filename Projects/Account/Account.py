@@ -19,7 +19,7 @@ cursor = db.cursor(buffered=True)
 
 def enterUser(email, pwd, win):
     cursor.execute(
-        "INSERT INTO userInfo (Username,Password) VALUES ('%s','%s')"
+        """"INSERT INTO userInfo (Username,Password) VALUES ('%s','%s')"""
         % (email.lower(), pwdHash.hash(pwd))
     )
     emVal = email.lower()
@@ -28,7 +28,7 @@ def enterUser(email, pwd, win):
 
 
 def delete(email, win):
-    cursor.execute("DELETE FROM userInfo WHERE Username = '%s'" % (email))
+    cursor.execute("""DELETE FROM userInfo WHERE Username = '%s'""" % (email))
     db.commit()
     win.destroy()
 
@@ -73,11 +73,13 @@ def welcome(email, oldWin):
 
 
 def logIn(email, pwd, win):
-    cursor.execute("SELECT Username FROM userInfo")
+    cursor.execute("""SELECT Username FROM userInfo""")
 
     for user in cursor:
         if email == str(user)[2:-3]:
-            cursor.execute(f"SELECT Password FROM userInfo WHERE Username = '{email}'")
+            cursor.execute(
+                """SELECT Password FROM userInfo WHERE Username = '%s'""", (email)
+            )
 
             for passwd in cursor:
                 if pwdHash.verify(str(pwd), str(passwd)[2:-3]):
@@ -100,14 +102,14 @@ def signUp(email, pwd, win):
 
     if re.search(r"^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$", email):
         if all(char.isalnum() for char in pwd):
-            cursor.execute("SELECT count(*) as tot FROM userInfo")
+            cursor.execute("""SELECT count(*) as tot FROM userInfo""")
 
             if (str(cursor.fetchone())[1]) == "0":
                 enterUser(email, pwd, win)
 
             else:
                 cursor.execute(
-                    f"SELECT Username FROM userInfo WHERE Username = '{email}'"
+                    """SELECT Username FROM userInfo WHERE Username = '%s'""", (email)
                 )
                 for user in cursor:
                     if (str(type(user))[8:-2]) == "tuple":
