@@ -8,34 +8,31 @@ import random
 
 
 def loadData():
-    ques = {}
-    ans = {}
-
-    pickedQues = []
-    pickedAns = []
+    ques = []
+    ans = []
 
     with open("Questions.json") as data:
         result = json.load(data)["results"]
-        for no, quesAns in enumerate(result):
-            ques.update({no: quesAns["question"]})
-            ans.update({no: quesAns["answer"]})
 
-    for _ in range(0, 5):
-        no = random.randint(0, 49)
-        pickedQues.append(ques[no])
-        pickedAns.append(ans[no])
-        ques.pop(no)
-        ans.pop(no)
+        for quesAns in result:
+            ques.append(quesAns["question"])
+            ans.append(quesAns["answer"])
 
-    return pickedQues, pickedAns
+    no = random.randint(0, 49)
+    ques.pop(no)
+    ans.pop(no)
+
+    return ques[no], ans[no]
 
 
-def check(opt, ques):
-    if opt:
-        print(True)
-        ques.config(text="hi")
+def check(opt, ans, ques):
+    quesText, ansText = loadData()
+
+    if opt == ans:
+        ques.config(text=quesText)
+
     else:
-        print("False")
+        ques.config(text=quesText)
 
 
 def main():
@@ -44,7 +41,9 @@ def main():
     root.title("Quiz")
     root.config(bg="black")
 
-    ques = tk.Label(root, text="Hi", bg="black", fg="white", font=("Calbri", "21"))
+    quesText, ansText = loadData()
+
+    ques = tk.Label(root, text=quesText, bg="black", fg="white", font=("Calbri", "21"))
     ques.grid(row=0, column=3, padx=3, pady=3)
 
     true = tk.Button(
@@ -53,7 +52,7 @@ def main():
         bg="black",
         fg="white",
         font=("Calbri", "14"),
-        command=lambda: check(True, ques),
+        command=lambda: check(True, ansText, ques),
     )
     true.grid(row=2, column=1, padx=10, pady=3)
 
@@ -63,7 +62,7 @@ def main():
         bg="black",
         fg="white",
         font=("Calbri", "14"),
-        command=lambda: check(False, ques),
+        command=lambda: check(False, ansText, ques),
     )
     false.grid(row=2, column=5, padx=3, pady=3)
 
