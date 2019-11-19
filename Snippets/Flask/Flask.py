@@ -1,8 +1,10 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
+from FlaskSecondary import secondary
 
 app = Flask(__name__)
+app.register_blueprint(secondary,url_prefix="/adminzzzz")
 app.secret_key = "4572"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
