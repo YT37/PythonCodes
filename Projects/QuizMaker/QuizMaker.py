@@ -4,7 +4,8 @@ import random
 import tkinter as tk
 import random
 
-# TODO implement Check
+# TODO Implement Title Screen And Ending
+#! Use Pack Instead Grid
 
 score = 0
 
@@ -23,11 +24,11 @@ def loadData():
         return k, v
 
 
-def check(opt, ans):
+def check(root, opt, ans):
     global score
-    global root
 
     if score <= 5:
+        print(str(opt) == ans)
         if opt == ans:
             score = score + 1
             root.destroy()
@@ -36,11 +37,12 @@ def check(opt, ans):
         else:
             root.destroy()
             main()
+    else:
+        root.destroy()
 
 
 def main():
     global score
-    global root
 
     root = tk.Tk()
     root.iconbitmap("Quiz.ico")
@@ -58,7 +60,7 @@ def main():
         bg="black",
         fg="white",
         font=("Calbri", "14"),
-        command=lambda: check(True, ansText),
+        command=lambda: check(root, "True", ansText),
     )
     true.grid(row=2, column=1, padx=10, pady=3)
 
@@ -68,7 +70,7 @@ def main():
         bg="black",
         fg="white",
         font=("Calbri", "14"),
-        command=lambda: check(False, ansText),
+        command=lambda: check(root, "False", ansText),
     )
     false.grid(row=2, column=5, padx=3, pady=3)
 
