@@ -6,36 +6,42 @@ import random
 
 # TODO implement Check
 
+score = 0
+
 
 def loadData():
-    ques = []
-    ans = []
+    quesAns = {}
 
     with open("Questions.json") as data:
-        result = json.load(data)["results"]
+        for no, dataset in enumerate(json.load(data)["results"], start=1):
+            quesAns.update({no: {dataset["question"]: dataset["answer"]}})
 
-        for quesAns in result:
-            ques.append(quesAns["question"])
-            ans.append(quesAns["answer"])
-
-    no = random.randint(0, 49)
-    ques.pop(no)
-    ans.pop(no)
-
-    return ques[no], ans[no]
+    no = random.randint(1, 50)
+    ques = quesAns[no]
+    quesAns.pop(no)
+    for k, v in dict(ques).items():
+        return k, v
 
 
-def check(opt, ans, ques):
-    quesText, ansText = loadData()
+def check(opt, ans):
+    global score
+    global root
 
-    if opt == ans:
-        ques.config(text=quesText)
+    if score <= 5:
+        if opt == ans:
+            score = score + 1
+            root.destroy()
+            main()
 
-    else:
-        ques.config(text=quesText)
+        else:
+            root.destroy()
+            main()
 
 
 def main():
+    global score
+    global root
+
     root = tk.Tk()
     root.iconbitmap("Quiz.ico")
     root.title("Quiz")
@@ -52,7 +58,7 @@ def main():
         bg="black",
         fg="white",
         font=("Calbri", "14"),
-        command=lambda: check(True, ansText, ques),
+        command=lambda: check(True, ansText),
     )
     true.grid(row=2, column=1, padx=10, pady=3)
 
@@ -62,7 +68,7 @@ def main():
         bg="black",
         fg="white",
         font=("Calbri", "14"),
-        command=lambda: check(False, ansText, ques),
+        command=lambda: check(False, ansText),
     )
     false.grid(row=2, column=5, padx=3, pady=3)
 
