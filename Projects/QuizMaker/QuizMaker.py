@@ -27,8 +27,7 @@ def loadData():
 def check(root, opt, ans):
     global score
 
-    if score <= 5:
-        print(str(opt) == ans)
+    if score != 5:
         if opt == ans:
             score = score + 1
             root.destroy()
@@ -43,6 +42,7 @@ def check(root, opt, ans):
 
 def main():
     global score
+    print(score)
 
     root = tk.Tk()
     root.iconbitmap("Quiz.ico")
