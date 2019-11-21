@@ -5,9 +5,9 @@ import tkinter as tk
 import random
 
 # TODO Implement Title Screen And Ending
-#! Use Pack Instead Grid
 
 score = 0
+answeredQues = -1
 
 
 def loadData():
@@ -26,56 +26,85 @@ def loadData():
 
 def check(root, opt, ans):
     global score
+    global answeredQues
 
-    if score != 5:
+    if answeredQues <= 4:
         if opt == ans:
             score = score + 1
             root.destroy()
-            main()
+            boolQuiz()
 
         else:
             root.destroy()
-            main()
+            boolQuiz()
     else:
         root.destroy()
 
 
-def main():
-    global score
-    print(score)
+def titleMenu():
+    root = tk.Tk()
+    bg = tk.PhotoImage(file="Quiz.gif")
+    root.geometry("%dx%d+500+200" % (bg.width(), bg.height()))
+    root.iconbitmap("Quiz.ico")
+    root.title("QuizMaker")
+    root.config(bg="black")
+    root.resizable(False, False)
+
+    cv = tk.Canvas(width=bg.width(), height=bg.height())
+    cv.pack(side="top", fill="both", expand="yes")
+
+    cv.create_image(0, 0, image=bg, anchor="nw")
+
+    root.mainloop()
+
+
+def boolQuiz():
+    global answeredQues
+
+    answeredQues += 1
 
     root = tk.Tk()
+    root.geometry("1400x100+75+300")
     root.iconbitmap("Quiz.ico")
-    root.title("Quiz")
+    root.title("BoolQuiz")
     root.config(bg="black")
+    root.resizable(False, False)
+
+    topFrame = tk.Frame(root)
+    topFrame.pack()
+
+    bottomFrame = tk.Frame(root)
+    bottomFrame.pack(side=tk.BOTTOM)
 
     quesText, ansText = loadData()
 
-    ques = tk.Label(root, text=quesText, bg="black", fg="white", font=("Calbri", "21"))
-    ques.grid(row=0, column=3, padx=3, pady=3)
+    ques = tk.Label(
+        topFrame, text=quesText, bg="black", fg="white", font=("Calbri", "18")
+    )
+    ques.pack()
 
     true = tk.Button(
-        root,
-        text=u"\u2714 True",
+        bottomFrame,
+        text=u"         \u2714 True         ",
         bg="black",
         fg="white",
-        font=("Calbri", "14"),
+        font=("Calbri", "18"),
         command=lambda: check(root, "True", ansText),
     )
-    true.grid(row=2, column=1, padx=10, pady=3)
+    true.pack(side=tk.LEFT)
 
     false = tk.Button(
-        root,
-        text=u"\u2718 False",
+        bottomFrame,
+        text=u"         \u2718 False        ",
         bg="black",
         fg="white",
-        font=("Calbri", "14"),
+        font=("Calbri", "18"),
         command=lambda: check(root, "False", ansText),
     )
-    false.grid(row=2, column=5, padx=3, pady=3)
+    false.pack(fill=tk.BOTH, side=tk.RIGHT)
 
     root.mainloop()
 
 
 if __name__ == "__main__":
-    main()
+    titleMenu()
