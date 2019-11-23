@@ -1,10 +1,8 @@
 import json
-import time
-import random
 import tkinter as tk
-import random
+from random import randint
 
-# TODO Implement Title Screen And Ending
+# TODO MCQQuiz
 
 score = 0
 answeredQues = -1
@@ -17,56 +15,90 @@ def loadData():
         for no, dataset in enumerate(json.load(data)["results"], start=1):
             quesAns.update({no: {dataset["question"]: dataset["answer"]}})
 
-    no = random.randint(1, 50)
+    no = randint(1, 50)
     ques = quesAns[no]
     quesAns.pop(no)
     for k, v in dict(ques).items():
         return k, v
 
 
-def check(root, opt, ans):
-    global score
+def titleMenu(root2=None):
     global answeredQues
+    global score
 
-    if answeredQues <= 4:
-        if opt == ans:
-            score = score + 1
-            root.destroy()
-            boolQuiz()
+    try:
+        answeredQues = 0
+        score = 0
+        root2.destroy()
 
-        else:
-            root.destroy()
-            boolQuiz()
-    else:
-        root.destroy()
+    except:
+        pass
 
-
-def titleMenu():
     root = tk.Tk()
     bg = tk.PhotoImage(file="Quiz.gif")
-    root.geometry("%dx%d+500+200" % (bg.width(), bg.height()))
+    root.geometry("%dx450+500+200" % (bg.width()))
     root.iconbitmap("Quiz.ico")
-    root.title("QuizMaker")
+    root.title("Quiz Maker")
     root.config(bg="black")
     root.resizable(False, False)
+
+    topFrame = tk.Frame(root)
+    topFrame.pack()
 
     cv = tk.Canvas(width=bg.width(), height=bg.height())
     cv.pack(side="top", fill="both", expand="yes")
 
     cv.create_image(0, 0, image=bg, anchor="nw")
 
+    title = tk.Label(
+        topFrame, text="Quiz Maker", fg="white", bg="black", font=("Calbri", "40")
+    )
+    title.pack(side=tk.TOP, anchor="n")
+
+    mcqQ = tk.Button(
+        cv,
+        text="MCQ Quiz",
+        fg="black",
+        font=("Calbri", "18"),
+        command=lambda: check(root, "True"),
+    )
+    mcqQ.pack(side=tk.LEFT, anchor="center")
+
+    boolQ = tk.Button(
+        cv,
+        text="Bool Quiz",
+        fg="black",
+        font=("Calbri", "18"),
+        command=lambda: boolQuiz(root),
+    )
+    boolQ.pack(side=tk.RIGHT, anchor="center")
+
+    destroy = tk.Button(
+        cv,
+        text="Quit",
+        fg="black",
+        font=("Calbri", "21"),
+        command=lambda: root.destroy(),
+    )
+    destroy.pack(side=tk.BOTTOM, anchor="center")
+
     root.mainloop()
 
 
-def boolQuiz():
+def boolQuiz(root2=None):
     global answeredQues
+
+    try:
+        root2.destroy()
+    except:
+        pass
 
     answeredQues += 1
 
     root = tk.Tk()
     root.geometry("1400x100+75+300")
     root.iconbitmap("Quiz.ico")
-    root.title("BoolQuiz")
+    root.title("Bool Quiz")
     root.config(bg="black")
     root.resizable(False, False)
 
@@ -85,7 +117,7 @@ def boolQuiz():
 
     true = tk.Button(
         bottomFrame,
-        text=u"         \u2714 True         ",
+        text="         \u2714 True         ",
         bg="black",
         fg="white",
         font=("Calbri", "18"),
@@ -95,13 +127,75 @@ def boolQuiz():
 
     false = tk.Button(
         bottomFrame,
-        text=u"         \u2718 False        ",
+        text="         \u2718 False        ",
         bg="black",
         fg="white",
         font=("Calbri", "18"),
         command=lambda: check(root, "False", ansText),
     )
     false.pack(fill=tk.BOTH, side=tk.RIGHT)
+
+    root.mainloop()
+
+
+def check(root, opt, ans):
+    global score
+    global answeredQues
+
+    if answeredQues <= 4:
+        if opt == ans:
+            score = score + 1
+            root.destroy()
+            boolQuiz()
+
+        else:
+            root.destroy()
+            boolQuiz()
+    else:
+        root.destroy()
+        scoreCard()
+
+
+def scoreCard():
+    global score
+
+    root = tk.Tk()
+    root.geometry("600x200+500+350")
+    root.iconbitmap("Quiz.ico")
+    root.title("Score")
+    root.resizable(False, False)
+
+    topFrame = tk.Frame(root)
+    topFrame.pack()
+
+    title = tk.Label(
+        topFrame,
+        text=f"You Have Scored {score}/5 Points",
+        fg="black",
+        bg="white",
+        font=("Calbri", "35"),
+    )
+    title.pack(side=tk.TOP, anchor="center")
+
+    restart = tk.Button(
+        topFrame,
+        text="Try Again",
+        fg="white",
+        bg="black",
+        font=("Calbri", "18"),
+        command=lambda: titleMenu(root),
+    )
+    restart.pack(side=tk.TOP, anchor="center", padx=10, pady=10)
+
+    destroy = tk.Button(
+        topFrame,
+        text="Quit",
+        fg="white",
+        bg="black",
+        font=("Calbri", "21"),
+        command=lambda: root.destroy(),
+    )
+    destroy.pack(side=tk.BOTTOM, anchor="center", padx=10, pady=10)
 
     root.mainloop()
 
