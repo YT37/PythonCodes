@@ -2,16 +2,20 @@ import json
 import tkinter as tk
 from random import randint
 
-# TODO MCQQuiz
-
 score = 0
 answeredQues = -1
 
 
-def loadData():
+def loadData(quizType):
     quesAns = {}
 
-    with open("Questions.json") as data:
+    if quizType:
+        quizFile = "Questions.json"
+
+    else:
+        quizFile = "Questions2.json"
+
+    with open(quizFile) as data:
         for no, dataset in enumerate(json.load(data)["results"], start=1):
             quesAns.update({no: {dataset["question"]: dataset["answer"]}})
 
@@ -60,7 +64,7 @@ def titleMenu(root2=None):
         text="MCQ Quiz",
         fg="black",
         font=("Calbri", "18"),
-        command=lambda: check(root, "True"),
+        command=lambda: mcqQuiz(root),
     )
     mcqQ.pack(side=tk.LEFT, anchor="center")
 
@@ -108,7 +112,7 @@ def boolQuiz(root2=None):
     bottomFrame = tk.Frame(root)
     bottomFrame.pack(side=tk.BOTTOM)
 
-    quesText, ansText = loadData()
+    quesText, ansText = loadData(True)
 
     ques = tk.Label(
         topFrame, text=quesText, bg="black", fg="white", font=("Calbri", "18")
@@ -121,7 +125,7 @@ def boolQuiz(root2=None):
         bg="black",
         fg="white",
         font=("Calbri", "18"),
-        command=lambda: check(root, "True", ansText),
+        command=lambda: check(False, root, "True", ansText),
     )
     true.pack(side=tk.LEFT)
 
@@ -131,26 +135,98 @@ def boolQuiz(root2=None):
         bg="black",
         fg="white",
         font=("Calbri", "18"),
-        command=lambda: check(root, "False", ansText),
+        command=lambda: check(False, root, "False", ansText),
     )
-    false.pack(fill=tk.BOTH, side=tk.RIGHT)
+    false.pack(side=tk.RIGHT)
 
     root.mainloop()
 
 
-def check(root, opt, ans):
+def mcqQuiz(root2=None):
+    global answeredQues
+
+    try:
+        root2.destroy()
+    except:
+        pass
+
+    answeredQues += 1
+
+    root = tk.Tk()
+    root.geometry("1400x100+75+300")
+    root.iconbitmap("Quiz.ico")
+    root.title("Bool Quiz")
+    root.config(bg="black")
+    root.resizable(False, False)
+
+    topFrame = tk.Frame(root)
+    topFrame.pack()
+
+    bottomFrame = tk.Frame(root)
+    bottomFrame.pack(side=tk.BOTTOM)
+
+    quesText, options = loadData(False)
+    correct = options[0]
+    incorrect1 = options[1]
+    incorrect2 = options[2]
+
+    ques = tk.Label(
+        topFrame, text=quesText, bg="black", fg="white", font=("Calbri", "18")
+    )
+    ques.pack()
+
+    opt1 = tk.Button(
+        bottomFrame,
+        text=f"     {incorrect1}     ",
+        bg="black",
+        fg="white",
+        font=("Calbri", "18"),
+        command=lambda: check(False, root, incorrect1, correct),
+    )
+    opt1.pack(side=tk.LEFT)
+
+    opt2 = tk.Button(
+        bottomFrame,
+        text=f"     {correct}     ",
+        bg="black",
+        fg="white",
+        font=("Calbri", "18"),
+        command=lambda: check(False, root, correct, correct),
+    )
+    opt2.pack(side=tk.LEFT)
+
+    opt3 = tk.Button(
+        bottomFrame,
+        text=f"     {incorrect2}     ",
+        bg="black",
+        fg="white",
+        font=("Calbri", "18"),
+        command=lambda: check(False, root, incorrect2, correct),
+    )
+    opt3.pack(side=tk.RIGHT)
+
+    root.mainloop()
+
+
+def check(quizType, root, opt, ans):
     global score
     global answeredQues
+
+    if quizType:
+        quiz = boolQuiz
+
+    else:
+        quiz = mcqQuiz
 
     if answeredQues <= 4:
         if opt == ans:
             score = score + 1
             root.destroy()
-            boolQuiz()
+            quiz()
 
         else:
             root.destroy()
-            boolQuiz()
+            quiz()
     else:
         root.destroy()
         scoreCard()
