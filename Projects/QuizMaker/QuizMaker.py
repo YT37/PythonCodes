@@ -125,7 +125,7 @@ def boolQuiz(root2=None):
         bg="black",
         fg="white",
         font=("Calbri", "18"),
-        command=lambda: check(False, root, "True", ansText),
+        command=lambda: check(True, root, "True", ansText),
     )
     true.pack(side=tk.LEFT)
 
@@ -135,7 +135,7 @@ def boolQuiz(root2=None):
         bg="black",
         fg="white",
         font=("Calbri", "18"),
-        command=lambda: check(False, root, "False", ansText),
+        command=lambda: check(True, root, "False", ansText),
     )
     false.pack(side=tk.RIGHT)
 

@@ -10,9 +10,7 @@ pwdHash = CryptContext(
     default="pbkdf2_sha256",
     pbkdf2_sha256__default_rounds=30000,
 )
-db = connector.connect(
-    host="localhost", user="root", passwd=os.environ.get("Password"), database="Users"
-)
+db = connector.connect(host="localhost", user="root", passwd="root", database="Users")
 
 cursor = db.cursor(buffered=True)
 
