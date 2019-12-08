@@ -17,7 +17,7 @@ cursor = db.cursor(buffered=True)
 
 def enterUser(email, pwd, win):
     cursor.execute(
-        """"INSERT INTO userInfo (Username,Password) VALUES ('%s','%s')"""
+        """INSERT INTO userInfo (Username,Password) VALUES ('%s','%s')"""
         % (email.lower(), pwdHash.hash(pwd))
     )
     emVal = email.lower()
@@ -76,7 +76,7 @@ def logIn(email, pwd, win):
     for user in cursor:
         if email == str(user)[2:-3]:
             cursor.execute(
-                """SELECT Password FROM userInfo WHERE Username = '%s'""", (email)
+                """SELECT Password FROM userInfo WHERE Username = '%s'""" % (email)
             )
 
             for passwd in cursor:
@@ -107,7 +107,7 @@ def signUp(email, pwd, win):
 
             else:
                 cursor.execute(
-                    """SELECT Username FROM userInfo WHERE Username = '%s'""", (email)
+                    """SELECT Username FROM userInfo WHERE Username = '%s'""" % (email)
                 )
                 for user in cursor:
                     if (str(type(user))[8:-2]) == "tuple":
