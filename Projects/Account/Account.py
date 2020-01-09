@@ -10,7 +10,8 @@ pwdHash = CryptContext(
     default="pbkdf2_sha256",
     pbkdf2_sha256__default_rounds=30000,
 )
-db = connector.connect(host="localhost", user="root", passwd="root", database="Users")
+db = connector.connect(host="localhost", user="root",
+                       passwd=os.environ.get("Password"), database="Users")
 
 cursor = db.cursor(buffered=True)
 
@@ -76,7 +77,8 @@ def logIn(email, pwd, win):
     for user in cursor:
         if email == str(user)[2:-3]:
             cursor.execute(
-                """SELECT Password FROM userInfo WHERE Username = '%s'""" % (email)
+                """SELECT Password FROM userInfo WHERE Username = '%s'""" % (
+                    email)
             )
 
             for passwd in cursor:
@@ -107,7 +109,8 @@ def signUp(email, pwd, win):
 
             else:
                 cursor.execute(
-                    """SELECT Username FROM userInfo WHERE Username = '%s'""" % (email)
+                    """SELECT Username FROM userInfo WHERE Username = '%s'""" % (
+                        email)
                 )
                 for user in cursor:
                     if (str(type(user))[8:-2]) == "tuple":
@@ -128,7 +131,8 @@ def signUp(email, pwd, win):
             )
 
     else:
-        messagebox.showinfo("Incorrect Email", "Email Format Should Be (abc01@exp.abc)")
+        messagebox.showinfo("Incorrect Email",
+                            "Email Format Should Be (abc01@exp.abc)")
 
 
 def main():
@@ -212,4 +216,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
