@@ -1,5 +1,5 @@
-import re
 import os
+import re
 import tkinter as t
 from tkinter import messagebox
 from mysql import connector

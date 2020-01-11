@@ -1,16 +1,15 @@
-import csv
 import math
 import random
 import re
 import sys
 import time
 import tkinter as tk
-from datetime import datetime
 from functools import reduce
 from tkinter import ttk
 import pyfirmata
 from mysql import connector
 import os
+
 
 # ----- Miscelenious -----
 def misc():
@@ -31,7 +30,6 @@ def misc():
     # Put multiple statements on 1 line
     v1 = 5
     v1 = v1 - 1
-
     """
     Multi-line
     Comment
@@ -101,7 +99,8 @@ def misc():
 
     # String formatting %e for exponent
     print("\n%04d %s %.2f %c" % (1, "Derek", 1.234, "A"))
-    print(v2,V2,v3,v4,cn1,b1,str1,str2)
+    print(v2, V2, v3, v4, cn1, b1, str1, str2)
+
 
 # ----- BuiltIn -----
 def conditionals():
@@ -266,7 +265,7 @@ def funcs():
     mult_list(list(range(0, 5)), mult_by_4)
 
     # Create list of functions
-    power_list = [lambda x: x ** 2, lambda x: x ** 3, lambda x: x ** 4]
+    power_list = [lambda x: x**2, lambda x: x**3, lambda x: x**4]
     print(power_list)
 
     # ----- MAP -----
@@ -362,9 +361,9 @@ def clases():
 
         # Used to cast to a string type
         def __str__(self):
-            return "{} is a {} and says {}".format(
-                self.__name, type(self).__name__, self.make_noise()
-            )
+            return "{} is a {} and says {}".format(self.__name,
+                                                   type(self).__name__,
+                                                   self.make_noise())
 
         # Magic methods are used for operator
         # overloading
@@ -731,7 +730,7 @@ def maths():
     print("5 * 2 =", 5 * 2)
     print("5 / 2 =", 5 / 2)
     print("5 % 2 =", 5 % 2)
-    print("5 ** 2 =", 5 ** 2)
+    print("5 ** 2 =", 5**2)
     print("5 // 2 =", 5 // 2)
 
     # Shortcuts
@@ -863,12 +862,8 @@ def tkInter():
         def equal_button_press(self):
 
             # Make sure a math button was clicked
-            if (
-                self.add_trigger
-                or self.sub_trigger
-                or self.mult_trigger
-                or self.div_trigger
-            ):
+            if (self.add_trigger or self.sub_trigger or self.mult_trigger
+                    or self.div_trigger):
 
                 if self.add_trigger:
                     solution = self.calc_value + float(self.entry_value.get())
@@ -879,9 +874,8 @@ def tkInter():
                 else:
                     solution = self.calc_value / float(self.entry_value.get())
 
-                print(
-                    self.calc_value, " ", float(self.entry_value.get()), " ", solution
-                )
+                print(self.calc_value, " ", float(self.entry_value.get()), " ",
+                      solution)
 
                 # Clear the entry box
                 self.number_entry.delete(0, "end")
@@ -908,80 +902,87 @@ def tkInter():
             style.configure("TEntry", font="Serif 18", padding=10)
 
             # Create the text entry box
-            self.number_entry = ttk.Entry(root, textvariable=self.entry_value, width=50)
+            self.number_entry = ttk.Entry(root,
+                                          textvariable=self.entry_value,
+                                          width=50)
             self.number_entry.grid(row=0, columnspan=4)
 
             # ----- 1st Row -----
 
             self.button7 = ttk.Button(
-                root, text="7", command=lambda: self.button_press("7")
-            ).grid(row=1, column=0)
+                root, text="7",
+                command=lambda: self.button_press("7")).grid(row=1, column=0)
 
             self.button8 = ttk.Button(
-                root, text="8", command=lambda: self.button_press("8")
-            ).grid(row=1, column=1)
+                root, text="8",
+                command=lambda: self.button_press("8")).grid(row=1, column=1)
 
             self.button9 = ttk.Button(
-                root, text="9", command=lambda: self.button_press("9")
-            ).grid(row=1, column=2)
+                root, text="9",
+                command=lambda: self.button_press("9")).grid(row=1, column=2)
 
             self.button_div = ttk.Button(
-                root, text="/", command=lambda: self.math_button_press("/")
-            ).grid(row=1, column=3)
+                root, text="/",
+                command=lambda: self.math_button_press("/")).grid(row=1,
+                                                                  column=3)
 
             # ----- 2nd Row -----
 
             self.button4 = ttk.Button(
-                root, text="4", command=lambda: self.button_press("4")
-            ).grid(row=2, column=0)
+                root, text="4",
+                command=lambda: self.button_press("4")).grid(row=2, column=0)
 
             self.button5 = ttk.Button(
-                root, text="5", command=lambda: self.button_press("5")
-            ).grid(row=2, column=1)
+                root, text="5",
+                command=lambda: self.button_press("5")).grid(row=2, column=1)
 
             self.button6 = ttk.Button(
-                root, text="6", command=lambda: self.button_press("6")
-            ).grid(row=2, column=2)
+                root, text="6",
+                command=lambda: self.button_press("6")).grid(row=2, column=2)
 
             self.button_mult = ttk.Button(
-                root, text="*", command=lambda: self.math_button_press("*")
-            ).grid(row=2, column=3)
+                root, text="*",
+                command=lambda: self.math_button_press("*")).grid(row=2,
+                                                                  column=3)
 
             # ----- 3rd Row -----
 
             self.button1 = ttk.Button(
-                root, text="1", command=lambda: self.button_press("1")
-            ).grid(row=3, column=0)
+                root, text="1",
+                command=lambda: self.button_press("1")).grid(row=3, column=0)
 
             self.button2 = ttk.Button(
-                root, text="2", command=lambda: self.button_press("2")
-            ).grid(row=3, column=1)
+                root, text="2",
+                command=lambda: self.button_press("2")).grid(row=3, column=1)
 
             self.button3 = ttk.Button(
-                root, text="3", command=lambda: self.button_press("3")
-            ).grid(row=3, column=2)
+                root, text="3",
+                command=lambda: self.button_press("3")).grid(row=3, column=2)
 
             self.button_add = ttk.Button(
-                root, text="+", command=lambda: self.math_button_press("+")
-            ).grid(row=3, column=3)
+                root, text="+",
+                command=lambda: self.math_button_press("+")).grid(row=3,
+                                                                  column=3)
 
             # ----- 4th Row -----
 
             self.button_clear = ttk.Button(
-                root, text="AC", command=lambda: self.button_press("AC")
-            ).grid(row=4, column=0)
+                root, text="AC",
+                command=lambda: self.button_press("AC")).grid(row=4, column=0)
 
             self.button0 = ttk.Button(
-                root, text="0", command=lambda: self.button_press("0")
-            ).grid(row=4, column=1)
+                root, text="0",
+                command=lambda: self.button_press("0")).grid(row=4, column=1)
 
             self.button_equal = ttk.Button(
-                root, text="=", command=lambda: self.equal_button_press()
-            ).grid(row=4, column=2)
+                root, text="=",
+                command=lambda: self.equal_button_press()).grid(row=4,
+                                                                column=2)
 
             self.button_sub = ttk.Button(
-                root, text="-", command=lambda: self.math_button_press("-")
-            ).grid(row=4, column=3)
+                root, text="-",
+                command=lambda: self.math_button_press("-")).grid(row=4,
+                                                                  column=3)
 
     # Get the root window object
     root = tk.Tk()
@@ -1059,7 +1060,7 @@ def regex():
         print(locTuple)
 
         # Slice the match out using the tuple values
-        print(theStr[locTuple[0] : locTuple[1]])
+        print(theStr[locTuple[0]:locTuple[1]])
 
     urls = """
     https://www.google.com
@@ -1079,8 +1080,7 @@ def regex():
     )
 
     regex = re.compile(
-        r"((1?)(-| ?)(\()?(\d{3})(\)|-| |\)-|\) )?(\d{3})(-| )?(\d{4}|\d{4}))"
-    )
+        r"((1?)(-| ?)(\()?(\d{3})(\)|-| |\)-|\) )?(\d{3})(-| )?(\d{4}|\d{4}))")
 
     matches = re.findall(regex, randStr)
 
@@ -1118,9 +1118,10 @@ def arduino():
 
 
 def mySQL():
-    db = connector.connect(
-        host="localhost", user="root", passwd=os.environ("Password"), database="Test"
-    )
+    db = connector.connect(host="localhost",
+                           user="root",
+                           passwd=os.environ("Password"),
+                           database="Test")
 
     cursor = db.cursor()
 
@@ -1158,10 +1159,10 @@ def mySQL():
     for x, y in enumerate(users):
         cursor.execute(q3, y)
         last = cursor.lastrowid
-        cursor.execute(q4, (last,) + scores[x])
+        cursor.execute(q4, (last, ) + scores[x])
     db.commit()
 
-    print(scores,q1,q2)
+    print(scores, q1, q2)
 
     cursor.execute("SELECT * FROM Scores")
     for x in cursor:
