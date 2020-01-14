@@ -1,14 +1,20 @@
 import math
+import os
 import random
 import re
 import sys
 import time
 import tkinter as tk
+from collections import Counter
+from datetime import datetime, timedelta
 from functools import reduce
 from tkinter import ttk
+import matplotlib.pyplot as plt
+import pandas as pd
 import pyfirmata
+from matplotlib import dates as mpl_dates
+from matplotlib.animation import FuncAnimation
 from mysql import connector
-import os
 
 
 # ----- Miscelenious -----
@@ -1167,3 +1173,261 @@ def mySQL():
     cursor.execute("SELECT * FROM Scores")
     for x in cursor:
         print(x)
+
+
+def matpltlib():
+        def time():
+                plt.style.use('seaborn')
+                data = pd.read_csv('data.csv')
+
+                data['Date'] = pd.to_datetime(data['Date'])
+                data.sort_values('Date', inplace=True)
+
+                price = data['Date']
+                priceC = data['Close']
+
+                plt.plot_date(price, priceC, linestyle='solid')
+
+                plt.gcf().autofmt_xdate()
+
+                plt.title('Bitcoin Prices')
+                plt.xlabel('Date')
+                plt.ylabel('Closing Price')
+
+                plt.tight_layout()
+
+                plt.show()
+
+
+        def sub():
+                plt.style.use('seaborn')
+
+                data = pd.read_csv('data.csv')
+                ages = data['Age']
+                devSal = data['All_Devs']
+                pySal = data['Python']
+                jsSal = data['JavaScript']
+
+                fig1, ax1 = plt.subplots()
+                fig2, ax2 = plt.subplots()
+
+                ax1.plot(ages, devSal, color='#444444', linestyle='--', label='All Devs')
+
+                ax2.plot(ages, pySal, label='Python')
+                ax2.plot(ages, jsSal, label='JavaScript')
+
+                ax1.legend()
+                ax1.set_title('Median Salary (USD) by Age')
+                ax1.set_ylabel('Median Salary (USD)')
+
+                ax2.legend()
+                ax2.set_xlabel('Ages')
+                ax2.set_ylabel('Median Salary (USD)')
+
+                plt.tight_layout()
+
+                plt.show()
+
+                fig1.savefig('fig1.png')
+                fig2.savefig('fig2.png')
+
+
+        def stack():
+                plt.style.use("fivethirtyeight")
+
+                minutes = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+                player1 = [8, 6, 5, 5, 4, 2, 1, 1, 0]
+                player2 = [0, 1, 2, 2, 2, 4, 4, 4, 4]
+                player3 = [0, 1, 1, 1, 2, 2, 3, 3, 4]
+
+                labels = ['player1', 'player2', 'player3']
+                colors = ['#6d904f', '#fc4f30', '#008fd5']
+
+                plt.stackplot(minutes,
+                                player1,
+                                player2,
+                                player3,
+                                labels=labels,
+                                colors=colors)
+
+                plt.legend(loc=(0.07, 0.05))
+
+                plt.title("Stack Plot")
+                plt.tight_layout()
+                plt.show()
+
+
+        def bar():
+                plt.style.use("fivethirtyeight")
+
+                data = pd.read_csv('data.csv')
+                ids = data['Responder_id']
+                lang = data['LanguagesWorkedWith']
+
+                langCount = Counter()
+
+                for response in lang:
+                        langCount.update(response.split(';'))
+
+                languages = []
+                popularity = []
+
+                for item in langCount.most_common(15):
+                        languages.append(item[0])
+                        popularity.append(item[1])
+
+                languages.reverse()
+                popularity.reverse()
+
+                plt.barh(languages, popularity)
+
+                plt.title("Most Popular Languages")
+                plt.ylabel("Programming Languages")
+                plt.xlabel("Number of People Who Use")
+
+                plt.tight_layout()
+
+                plt.show()
+
+
+        def scatter():
+                plt.style.use('seaborn')
+
+                data = pd.read_csv('data.csv')
+                view = data['view_count']
+                likes = data['likes']
+                ratio = data['ratio']
+
+                plt.scatter(view,
+                                likes,
+                                c=ratio,
+                                cmap='summer',
+                                edgecolor='black',
+                                linewidth=1,
+                                alpha=0.75)
+
+                cbar = plt.colorbar()
+                cbar.set_label('Like/Dislike Ratio')
+
+                plt.xscale('log')
+                plt.yscale('log')
+
+                plt.title('Trending YouTube Videos')
+                plt.xlabel('View Count')
+                plt.ylabel('Total Likes')
+
+                plt.tight_layout()
+
+                plt.show()
+
+
+        def fills():
+                data = pd.read_csv('data.csv')
+                ages = data['Age']
+                devSal = data['All_Devs']
+                pySal = data['Python']
+                jsSal = data['JavaScript']
+
+                plt.plot(ages, devSal, color='#444444', linestyle='--', label='All Devs')
+
+                plt.plot(ages, pySal, label='Python')
+
+                overall_median = 57287
+
+                plt.fill_between(ages,
+                                pySal,
+                                devSal,
+                                where=(pySal > devSal),
+                                interpolate=True,
+                                alpha=0.25,
+                                label='Above Avg')
+
+                plt.fill_between(ages,
+                                pySal,
+                                devSal,
+                                where=(pySal <= devSal),
+                                interpolate=True,
+                                color='red',
+                                alpha=0.25,
+                                label='Below Avg')
+
+                plt.legend()
+
+                plt.title('Median Salary (USD) by Age')
+                plt.xlabel('Ages')
+                plt.ylabel('Median Salary (USD)')
+
+                plt.tight_layout()
+
+                plt.show()
+
+
+                def pieChart():
+                plt.style.use("fivethirtyeight")
+
+                slices = [59219, 55466, 47544, 36443, 35917]
+                labels = ['JavaScript', 'HTML/CSS', 'SQL', 'Python', 'Java']
+                explode = [0, 0, 0, 0.1, 0]
+
+                plt.pie(slices,
+                        labels=labels,
+                        explode=explode,
+                        shadow=True,
+                        startangle=90,
+                        autopct='%1.1f%%',
+                        wedgeprops={'edgecolor': 'black'})
+
+                plt.title("Pie Chart")
+                plt.tight_layout()
+                plt.show()
+
+
+        def liveData():
+                plt.style.use('fivethirtyeight')
+
+                def animate(i):
+                        data = pd.read_csv('data.csv')
+                        x = data['x_value']
+                        y1 = data['total_1']
+                        y2 = data['total_2']
+
+                        plt.cla()
+
+                        plt.plot(x, y1, label='Channel 1')
+                        plt.plot(x, y2, label='Channel 2')
+
+                        plt.legend(loc='upper left')
+                        plt.tight_layout()
+
+                ani = FuncAnimation(plt.gcf(), animate, interval=1000)
+
+                plt.tight_layout()
+                plt.show()
+
+
+        def histogram():
+                plt.style.use('fivethirtyeight')
+
+                data = pd.read_csv('data.csv')
+                ids = data['Responder_id']
+                ages = data['Age']
+
+                bins = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+
+                plt.hist(ages, bins=bins, edgecolor='black', log=True)
+
+                median_age = 29
+                color = '#fc4f30'
+
+                plt.axvline(median_age, color=color, label='Age Median', linewidth=2)
+
+                plt.legend()
+
+                plt.title('Ages of Respondents')
+                plt.xlabel('Ages')
+                plt.ylabel('Total Respondents')
+
+                plt.tight_layout()
+
+                plt.show()
