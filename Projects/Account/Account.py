@@ -10,17 +10,18 @@ pwdHash = CryptContext(
     default="pbkdf2_sha256",
     pbkdf2_sha256__default_rounds=30000,
 )
-db = connector.connect(host="localhost", user="root",
-                       passwd=os.environ.get("Password"), database="Users")
+db = connector.connect(host="localhost",
+                       user="root",
+                       passwd=os.environ.get("Password"),
+                       database="Users")
 
 cursor = db.cursor(buffered=True)
 
 
 def enterUser(email, pwd, win):
     cursor.execute(
-        """INSERT INTO userInfo (Username,Password) VALUES ('%s','%s')"""
-        % (email.lower(), pwdHash.hash(pwd))
-    )
+        """INSERT INTO userInfo (Username,Password) VALUES ('%s','%s')""" %
+        (email.lower(), pwdHash.hash(pwd)))
     emVal = email.lower()
     db.commit()
     welcome(emVal, win)
@@ -77,9 +78,8 @@ def logIn(email, pwd, win):
     for user in cursor:
         if email == str(user)[2:-3]:
             cursor.execute(
-                """SELECT Password FROM userInfo WHERE Username = '%s'""" % (
-                    email)
-            )
+                """SELECT Password FROM userInfo WHERE Username = '%s'""" %
+                (email))
 
             for passwd in cursor:
                 if pwdHash.verify(str(pwd), str(passwd)[2:-3]):
@@ -87,8 +87,8 @@ def logIn(email, pwd, win):
                     welcome(emVal, win)
                 else:
                     messagebox.showinfo(
-                        "Wrong Password", "The Password You Entered Is Wrong, Try Again"
-                    )
+                        "Wrong Password",
+                        "The Password You Entered Is Wrong, Try Again")
         else:
             messagebox.showinfo(
                 "Not Registered",
@@ -109,9 +109,8 @@ def signUp(email, pwd, win):
 
             else:
                 cursor.execute(
-                    """SELECT Username FROM userInfo WHERE Username = '%s'""" % (
-                        email)
-                )
+                    """SELECT Username FROM userInfo WHERE Username = '%s'""" %
+                    (email))
                 for user in cursor:
                     if (str(type(user))[8:-2]) == "tuple":
                         messagebox.showinfo(
@@ -145,19 +144,25 @@ def main():
     emailVal = t.StringVar()
     pwdVal = t.StringVar()
 
-    emailLabel = t.Label(
-        win, text="Email : ", bg="black", fg="white", font=("Helvetica", "11")
-    )
+    emailLabel = t.Label(win,
+                         text="Email : ",
+                         bg="black",
+                         fg="white",
+                         font=("Helvetica", "11"))
     emailLabel.grid(row=0, column=0, padx=5, pady=5)
 
-    email = t.Entry(
-        win, textvariable=emailVal, bg="black", fg="white", font=("Helvetica", "9")
-    )
+    email = t.Entry(win,
+                    textvariable=emailVal,
+                    bg="black",
+                    fg="white",
+                    font=("Helvetica", "9"))
     email.grid(row=0, column=1, padx=5, pady=5)
 
-    pwdLabel = t.Label(
-        win, text="Password : ", bg="black", fg="white", font=("Helvetica", "11")
-    )
+    pwdLabel = t.Label(win,
+                       text="Password : ",
+                       bg="black",
+                       fg="white",
+                       font=("Helvetica", "11"))
     pwdLabel.grid(row=1, column=0, padx=5, pady=5)
 
     pwd = t.Entry(
@@ -198,9 +203,11 @@ def main():
     )
     logInb.grid(row=2, column=1, padx=5, pady=5)
 
-    signUpLabel = t.Label(
-        win, text="New User ? Sign Up", font=("Helvetica", "11"), bg="black", fg="white"
-    )
+    signUpLabel = t.Label(win,
+                          text="New User ? Sign Up",
+                          font=("Helvetica", "11"),
+                          bg="black",
+                          fg="white")
     signUpLabel.grid(row=3, column=1)
 
     signUpb = t.Button(
@@ -216,3 +223,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # db = connector.connect(host="localhost",
+    #                        user="root",
+    #                        passwd=os.environ.get("Password"),
+    #                        database="Users")
+    # cursor = db.cursor(buffered=True)
+    # cursor.execute("CREATE DATABASE Users")
+    # cursor.execute("CREATE TABLE userInfo (Username VARCHAR(50),Password VARCHAR(300))")
