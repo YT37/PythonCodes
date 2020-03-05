@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import datetime
 import os.path
 import pickle
@@ -30,7 +28,9 @@ months = [
     "November",
     "December",
 ]
-days = ["monday", "tuesday", "wednesday", "thurday", "friday", "saturday", "sunday"]
+days = [
+    "monday", "tuesday", "wednesday", "thurday", "friday", "saturday", "sunday"
+]
 daysExt = ["st", "nd", "rd", "th"]
 calStrs = ["What do i have", "do i have plans", "busy", "on"]
 noteStrs = ["make a note", "write this down", "remember this", "note"]
@@ -49,7 +49,8 @@ def authenticate():
             creds.refresh(Request())
 
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("Cred.json", scopes)
+            flow = InstalledAppFlow.from_client_secrets_file(
+                "Cred.json", scopes)
             creds = flow.run_local_server(port=0)
 
         with open("Token.pickle", "wb") as Token:
@@ -69,17 +70,13 @@ def getevent(days, s):
     date = date.astimezone(utc)
     end = end.astimezone(utc)
 
-    eventResult = (
-        s.events()
-        .list(
-            calendarId="primary",
-            timeMin=date.isoformat(),
-            timeMax=end.isoformat(),
-            singleEvents=True,
-            orderBy="startTime",
-        )
-        .execute()
-    )
+    eventResult = (s.events().list(
+        calendarId="primary",
+        timeMin=date.isoformat(),
+        timeMax=end.isoformat(),
+        singleEvents=True,
+        orderBy="startTime",
+    ).execute())
 
     events = eventResult.get("items", [])
 
@@ -97,7 +94,8 @@ def getevent(days, s):
                 if int(startT.split(":")[0]) < 12:
                     startT = startT + "am"
                 else:
-                    startT = str(int(startT.split(":")[0]) - 12) + startT.split(":")[1]
+                    startT = str(int(startT.split(":")[0]) -
+                                 12) + startT.split(":")[1]
                     startT = startT + "pm"
 
                 speak(event["summary"] + " at " + startT)
