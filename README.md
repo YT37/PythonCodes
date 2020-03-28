@@ -1,4 +1,4 @@
-# PythonCodes
+# PythonSnippets
 
 1. These are the Snippets in Python.
 2. You are free to use them.
