@@ -1,5 +1,5 @@
 # AreaCalc
-- This project calculates the area of diffrent shapes.
+- This project calculates the area of diffrent shapes in Python.
 
 # Requirements
  - Python 3.6 or up
