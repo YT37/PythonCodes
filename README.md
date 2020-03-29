@@ -3,9 +3,7 @@
 - These are small projects or code snippets from diffrent tutorials.
 
 # Requirements
- - Python 3.x
- - NEAT
- - PyGame
+ - They are in their respective folders
  
  # Instructions To Use
-   - **Intrucstions are in their respective folders**
+   - They are in their respective folders
