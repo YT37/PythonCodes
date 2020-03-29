@@ -7,9 +7,9 @@
  # Instructions To Use
  - **Windows**
    ```
-   python MessageEncrypter.py
+   python AreaCalc.py
    ```
  - **Mac or Linux**
    ```
-   python3 MessageEncrypter.py
+   python3 AreaCalc.py
    ```
