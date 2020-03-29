@@ -5,7 +5,7 @@
  - Python 3.6 or up
  
  # Instructions To Use
-    - **Windows**
+ - **Windows**
    ```
    python TreeMaker.py
    ```
