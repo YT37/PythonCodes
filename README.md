@@ -1,5 +1,11 @@
 # PythonSnippets
 
-1. These are the Snippets in Python.
-2. You are free to use them.
-3. But they are not commented.
+- These are small projects or code snippets from diffrent tutorials.
+
+# Requirements
+ - Python 3.x
+ - NEAT
+ - PyGame
+ 
+ # Instructions To Use
+   - **Intrucstions are in their respective folders**
