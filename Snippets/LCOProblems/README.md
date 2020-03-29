@@ -1,5 +1,5 @@
 # LCOProblems
-- This project are the solutions of [these](https://courses.learncodeonline.in/learn/Competitive-Programming-Python-challenges?) challenges in Python.
+- This project are the Solutions of [these](https://courses.learncodeonline.in/learn/Competitive-Programming-Python-challenges?) challenges in Python.
 
 # Requirements
  - Python 3.6 or up
