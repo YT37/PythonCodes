@@ -5,6 +5,11 @@
  - Python 3.6 or up
  
  # Instructions To Use
+ - **Windows**
+   ```
+   python BubbleSort.py
+   ```
+ - **Mac or Linux**
    ```
    python3 BubbleSort.py
    ```
