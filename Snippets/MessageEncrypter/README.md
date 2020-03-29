@@ -1,11 +1,11 @@
 # MessageEncrypter
-- This project encrypts/decrypts messages in Python.
+- This project Encrypts/Decrypts messages in Python.
 
 # Requirements
  - Python 3.6 or up
  
  # Instructions To Use
-    - **Windows**
+ - **Windows**
    ```
    python MessageEncrypter.py
    ```
