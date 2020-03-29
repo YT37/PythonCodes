@@ -5,6 +5,11 @@
  - Python 3.6 or up
  
  # Instructions To Use
+ - **Windows**
    ```
-   python3 AreaCalc.py
+   python MessageEncrypter.py
+   ```
+ - **Mac or Linux**
+   ```
+   python3 MessageEncrypter.py
    ```
