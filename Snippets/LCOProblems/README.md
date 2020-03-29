@@ -9,7 +9,7 @@
    ```
    python LCOProblems.py
    ```
-  - **Mac or Linux**
+ - **Mac or Linux**
    ```
    python3 LCOProblms.py
    ```
