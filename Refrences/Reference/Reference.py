@@ -11,10 +11,16 @@ from functools import reduce
 from tkinter import ttk
 import matplotlib.pyplot as plt
 import pandas as pd
-import pyfirmata
 from matplotlib import dates as mpl_dates
 from matplotlib.animation import FuncAnimation
 from mysql import connector
+import pyfirmata
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 # ----- Miscelenious -----
@@ -1431,3 +1437,36 @@ def matpltlib():
                 plt.tight_layout()
 
                 plt.show()
+
+def selnium():
+    options = webdriver.ChromeOptions()
+    options.binary_location = (
+        r"C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe"
+    )
+
+    driver = webdriver.Chrome(
+        r"C:\Program Files (x86)\Chrome Driver\Driver.exe", chrome_options=options
+    )
+
+
+    driver.get("https://orteil.dashnet.org/cookieclicker/")
+
+    driver.implicitly_wait(5)
+
+    cookie = driver.find_element_by_id("bigCookie")
+    cookieCount = driver.find_element_by_id("cookies")
+    items = [driver.find_element_by_id("productPrice" + str(i)) for i in range(1, -1, -1)]
+
+    actions = ActionChains(driver)
+    actions.click(cookie)
+
+    for i in range(5000):
+        actions.perform()
+        count = int(cookieCount.text.split(" ")[0])
+        for item in items:
+            value = int(item.text)
+            if value <= count:
+                upgrade = ActionChains(driver)
+                upgrade.move_to_element(item)
+                upgrade.click()
+                upgrade.perform()
